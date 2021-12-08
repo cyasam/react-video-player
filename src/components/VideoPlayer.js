@@ -105,7 +105,10 @@ function VideoPlayer({ data }) {
 
     const videoProgressWidth = videoProgressClientRects.width;
     const videoProgressStartPosition = videoProgressClientRects.x;
-    const videoProgressMousePosition = event.clientX;
+    const videoProgressMousePosition =
+      event.type === 'touchmove'
+        ? event.targetTouches[0].clientX
+        : event.clientX;
 
     const selectedTimeResult =
       ((videoProgressMousePosition - videoProgressStartPosition) /
@@ -179,7 +182,20 @@ function VideoPlayer({ data }) {
       },
       false
     );
-  }, []);
+
+    window.addEventListener(
+      'resize',
+      function () {
+        const videoProgress = videoProgressRef.current;
+        const videoProgressClientRects = videoProgress.getClientRects()[0];
+
+        const videoProgressWidth = videoProgressClientRects.width;
+
+        setBulletPosX((currentTime / duration) * videoProgressWidth);
+      },
+      false
+    );
+  }, [currentTime, duration]);
 
   useEffect(() => {
     const videoProgress = videoProgressRef.current;
@@ -244,7 +260,7 @@ function VideoPlayer({ data }) {
               style={{ width: getCurrentPercentage() }}
             >
               <Draggable
-                ref={bulletRef}
+                nodeRef={bulletRef}
                 axis="x"
                 bounds=".video-progress-wrapper"
                 handle=".bullet"
@@ -253,7 +269,7 @@ function VideoPlayer({ data }) {
                 onDrag={handleBulletDrag}
                 onStop={handleBulletStop}
               >
-                <div className="bullet" />
+                <div ref={bulletRef} className="bullet" />
               </Draggable>
             </div>
           </div>
