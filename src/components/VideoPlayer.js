@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import Draggable from 'react-draggable';
 import './VideoPlayer.css';
 
 import { ReactComponent as PlayIcon } from '../images/play.svg';
@@ -11,6 +12,8 @@ import { ReactComponent as FullscreenExitIcon } from '../images/fullscreen-exit.
 function VideoPlayer({ data }) {
   const videoWrapperRef = useRef(null);
   const videoRef = useRef(null);
+  const videoProgressRef = useRef(null);
+  const bulletRef = useRef(null);
 
   const [video] = useState(data);
   const [duration, setDuration] = useState(0);
@@ -20,6 +23,7 @@ function VideoPlayer({ data }) {
   const [soundStatus, setSoundStatus] = useState(null);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
+  const [bulletPosX, setBulletPosX] = useState(0);
 
   const play = () => {
     const video = videoRef.current;
@@ -83,8 +87,6 @@ function VideoPlayer({ data }) {
     setLoadedPercentage(loadPercentage);
   };
 
-  const onPause = () => setStatus('paused');
-
   const getCurrentPercentage = () => {
     return (currentTime / duration) * 100 + '%';
   };
@@ -98,7 +100,7 @@ function VideoPlayer({ data }) {
   };
 
   const handleProgressOnOver = (event) => {
-    const videoProgress = event.currentTarget;
+    const videoProgress = videoProgressRef.current;
     const videoProgressClientRects = videoProgress.getClientRects()[0];
 
     const videoProgressWidth = videoProgressClientRects.width;
@@ -109,7 +111,10 @@ function VideoPlayer({ data }) {
       ((videoProgressMousePosition - videoProgressStartPosition) /
         videoProgressWidth) *
       duration;
-    setSelectedTime(selectedTimeResult);
+
+    if (selectedTimeResult > 0) {
+      setSelectedTime(selectedTimeResult);
+    }
   };
 
   const handleProgressOnOut = () => {
@@ -120,6 +125,23 @@ function VideoPlayer({ data }) {
     const video = videoRef.current;
     video.currentTime = selectedTime;
     setCurrentTime(currentTime);
+  };
+
+  const handleBulletDrag = (event) => {
+    const video = videoRef.current;
+    video.pause();
+
+    handleProgressOnOver(event);
+  };
+
+  const handleBulletStop = () => {
+    handleProgressClick();
+    setBulletPosX(bulletRef.current.state.x);
+
+    if (status === 'playing') {
+      const video = videoRef.current;
+      video.play();
+    }
   };
 
   const formatVideoTime = (time) => {
@@ -159,6 +181,11 @@ function VideoPlayer({ data }) {
     );
   }, []);
 
+  useEffect(() => {
+    const videoProgress = videoProgressRef.current;
+    setBulletPosX((currentTime / duration) * videoProgress.clientWidth);
+  }, [currentTime, duration]);
+
   let videoWrapperClass = 'video-wrapper';
 
   if (fullscreenStatus) {
@@ -176,7 +203,6 @@ function VideoPlayer({ data }) {
             width={video.width}
             onLoadedData={onLoadedData}
             onProgress={onProgress}
-            onPause={onPause}
             onTimeUpdate={onTimeUpdate}
           >
             {video.sources.map(({ id, url, type }) => (
@@ -197,6 +223,7 @@ function VideoPlayer({ data }) {
           <div className="controls-background" />
 
           <div
+            ref={videoProgressRef}
             className="video-progress-wrapper"
             onClick={handleProgressClick}
             onMouseMove={handleProgressOnOver}
@@ -215,7 +242,20 @@ function VideoPlayer({ data }) {
             <div
               className="current-progress"
               style={{ width: getCurrentPercentage() }}
-            />
+            >
+              <Draggable
+                ref={bulletRef}
+                axis="x"
+                bounds=".video-progress-wrapper"
+                handle=".bullet"
+                position={{ x: bulletPosX, y: 0 }}
+                offsetParent={videoProgressRef.current}
+                onDrag={handleBulletDrag}
+                onStop={handleBulletStop}
+              >
+                <div className="bullet" />
+              </Draggable>
+            </div>
           </div>
 
           {duration > 0 && (
