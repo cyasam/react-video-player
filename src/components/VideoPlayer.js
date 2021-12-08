@@ -137,9 +137,9 @@ function VideoPlayer({ data }) {
     handleProgressOnOver(event);
   };
 
-  const handleBulletStop = () => {
+  const handleBulletStop = (_, dragElement) => {
     handleProgressClick();
-    setBulletPosX(bulletRef.current.state.x);
+    setBulletPosX(dragElement.x);
 
     if (status === 'playing') {
       const video = videoRef.current;
