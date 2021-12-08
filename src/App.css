@@ -1,11 +1,9 @@
 .app {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   padding: 30px;
-}
-
-.app .video-player {
-  flex: 1;
 }
 
 @media screen and (max-width: 1279px) {

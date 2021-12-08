@@ -17,7 +17,7 @@ const video = [
     thumb: 'video/surfing_with_audio_thumb.jpg',
     title: 'Surfing',
   },
-  {
+  /* {
     width: 1280,
     height: 720,
     sources: [
@@ -29,7 +29,7 @@ const video = [
     ],
     thumb: 'video/video-1-thumb.jpg',
     title: 'Avrasya Anket',
-  },
+  }, */
 ];
 
 export default video;
