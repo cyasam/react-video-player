@@ -1,38 +1,143 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.video-wrapper {
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.video-wrapper.fullscreen .video {
+  width: 100%;
+  height: auto;
+}
+
+.video-wrapper .button {
+  width: 35px;
+  height: 100%;
+  padding: 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.video-wrapper.fullscreen .button {
+  width: 45px;
+  height: 100%;
+}
+
+.video-wrapper .button svg {
+  width: 100%;
+  height: 100%;
+  max-height: 25px;
+}
+
+.video-wrapper .video {
+  display: block;
+}
+
+.video-wrapper .button svg path {
+  fill: #fff;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0 15px;
+}
+
+.video-wrapper.fullscreen .video-controls {
+  height: 80px;
+}
+
+.video-controls .controls-background {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(100% + 25px);
+  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 212, 255, 0) 100%
+  );
+}
+
+.video-controls .controls-inner {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 5px;
+}
+
+.video-controls .fullscreen-button {
+  margin-left: auto;
+}
+
+.video-controls .time-display {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+  font-size: 14px;
+}
+
+.video-screen {
+  position: relative;
+}
+
+.video-screen .play-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  transition: all 0.3s ease;
+}
+
+.video-screen .play-overlay svg {
+  width: 80px;
+  height: auto;
+}
+
+.video-screen .play-overlay svg path {
+  fill: #fff;
+}
+
+.video-progress-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 10;
+
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.video-progress-wrapper > div {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  transition: all 0.3s linear;
+}
+
+.video-progress-wrapper .current-progress {
+  background-color: #ff0000;
+}
+
+.video-progress-wrapper .load-progress {
+  background-color: rgba(255, 255, 255, 0.6);
 }
