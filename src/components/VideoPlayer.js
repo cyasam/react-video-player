@@ -70,21 +70,29 @@ function VideoPlayer({ data }) {
 
   const onTimeUpdate = () => {
     setCurrentTimeAndDuration();
+    onProgress();
   };
 
   const onProgress = () => {
+    let range = 0;
     const video = videoRef.current;
     const buffered = video.buffered;
 
-    if (buffered.length === 0) {
+    if (buffered.length === 0 || currentTime <= 0) {
       return;
     }
 
-    const loadStartPercentage = buffered.start(0) / duration;
-    const loadEndPercentage = buffered.end(buffered.length - 1) / duration;
-    const loadPercentage = loadEndPercentage - loadStartPercentage;
+    while (
+      !(
+        buffered.start(range) <= currentTime &&
+        currentTime <= buffered.end(range)
+      )
+    ) {
+      range += 1;
+    }
+    const loadEndPercentage = buffered.end(range) / duration;
 
-    setLoadedPercentage(loadPercentage);
+    setLoadedPercentage(loadEndPercentage);
   };
 
   const getCurrentPercentage = () => {
@@ -218,7 +226,6 @@ function VideoPlayer({ data }) {
             poster={video.thumb}
             width={video.width}
             onLoadedData={onLoadedData}
-            onProgress={onProgress}
             onTimeUpdate={onTimeUpdate}
           >
             {video.sources.map(({ id, url, type }) => (
