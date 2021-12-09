@@ -5,16 +5,11 @@ const video = [
     sources: [
       {
         id: 1,
-        url: 'https://www.angrygorilla.us/video/surfing_with_audio_720p.mp4',
+        url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         type: 'video/mp4',
       },
-      {
-        id: 2,
-        url: 'https://www.angrygorilla.us/video/surfing_with_audio_720p.webm',
-        type: 'video/webm',
-      },
     ],
-    thumb: 'https://www.angrygorilla.us/video/surfing_with_audio_thumb.jpg',
+    thumb: 'https://video-react.js.org/assets/poster.png',
     title: 'Surfing',
   },
 ];
