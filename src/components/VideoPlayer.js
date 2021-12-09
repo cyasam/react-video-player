@@ -14,6 +14,7 @@ function VideoPlayer({ data }) {
   const videoRef = useRef(null);
   const videoProgressRef = useRef(null);
   const bulletRef = useRef(null);
+  const bulletDraggableRef = useRef(null);
 
   const [video] = useState(data);
   const [duration, setDuration] = useState(0);
@@ -24,6 +25,7 @@ function VideoPlayer({ data }) {
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
   const [bulletPosX, setBulletPosX] = useState(0);
+  const [draggedBullet, setDraggedBullet] = useState(0);
 
   const play = () => {
     const video = videoRef.current;
@@ -73,6 +75,10 @@ function VideoPlayer({ data }) {
     onProgress();
   };
 
+  const onEnded = () => {
+    setStatus('paused');
+  };
+
   const onProgress = () => {
     let range = 0;
     const video = videoRef.current;
@@ -82,17 +88,10 @@ function VideoPlayer({ data }) {
       return;
     }
 
-    while (
-      !(
-        buffered.start(range) <= currentTime &&
-        currentTime <= buffered.end(range)
-      )
-    ) {
-      range += 1;
-    }
+    const loadStartPercentage = buffered.start(range) / duration;
     const loadEndPercentage = buffered.end(range) / duration;
 
-    setLoadedPercentage(loadEndPercentage);
+    setLoadedPercentage(loadEndPercentage - loadStartPercentage);
   };
 
   const getCurrentPercentage = () => {
@@ -123,13 +122,15 @@ function VideoPlayer({ data }) {
         videoProgressWidth) *
       duration;
 
-    if (selectedTimeResult > 0) {
+    if (selectedTimeResult <= duration) {
       setSelectedTime(selectedTimeResult);
     }
   };
 
   const handleProgressOnOut = () => {
-    setSelectedTime(0);
+    if (!bulletDraggableRef.current.state.dragging) {
+      setSelectedTime(0);
+    }
   };
 
   const handleProgressClick = () => {
@@ -139,6 +140,7 @@ function VideoPlayer({ data }) {
   };
 
   const handleBulletDrag = (event) => {
+    setDraggedBullet(true);
     const video = videoRef.current;
     video.pause();
 
@@ -210,6 +212,10 @@ function VideoPlayer({ data }) {
     setBulletPosX((currentTime / duration) * videoProgress.clientWidth);
   }, [currentTime, duration]);
 
+  useEffect(() => {
+    setDraggedBullet(false);
+  }, [currentTime]);
+
   let videoWrapperClass = 'video-wrapper';
 
   if (fullscreenStatus) {
@@ -227,6 +233,7 @@ function VideoPlayer({ data }) {
             width={video.width}
             onLoadedData={onLoadedData}
             onTimeUpdate={onTimeUpdate}
+            onEnded={onEnded}
           >
             {video.sources.map(({ id, url, type }) => (
               <source key={id} src={url} type={type} />
@@ -247,7 +254,9 @@ function VideoPlayer({ data }) {
 
           <div
             ref={videoProgressRef}
-            className="video-progress-wrapper"
+            className={`video-progress-wrapper${
+              draggedBullet ? ' dragging' : ''
+            }`}
             onClick={handleProgressClick}
             onMouseMove={handleProgressOnOver}
             onMouseLeave={handleProgressOnOut}
@@ -260,13 +269,8 @@ function VideoPlayer({ data }) {
               className="selected-progress"
               style={{ width: getSelectedPercentage() }}
             >
-              <div className="tooltip">{formatVideoTime(selectedTime)}</div>
-            </div>
-            <div
-              className="current-progress"
-              style={{ width: getCurrentPercentage() }}
-            >
               <Draggable
+                ref={bulletDraggableRef}
                 nodeRef={bulletRef}
                 axis="x"
                 bounds=".video-progress-wrapper"
@@ -278,7 +282,12 @@ function VideoPlayer({ data }) {
               >
                 <div ref={bulletRef} className="bullet" />
               </Draggable>
+              <div className="tooltip">{formatVideoTime(selectedTime)}</div>
             </div>
+            <div
+              className="current-progress"
+              style={{ width: getCurrentPercentage() }}
+            />
           </div>
 
           {duration > 0 && (

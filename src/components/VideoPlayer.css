@@ -91,7 +91,10 @@
 }
 
 .video-screen {
+  display: flex;
+  align-items: stretch;
   position: relative;
+  height: 100%;
 }
 
 .video-screen .play-overlay {
@@ -119,9 +122,9 @@
 
 .video-progress-wrapper {
   position: absolute;
-  left: 0;
+  left: 20px;
+  right: 20px;
   top: 0;
-  width: 100%;
   height: 6px;
   z-index: 10;
   cursor: pointer;
@@ -139,6 +142,10 @@
   background-color: #ff0000;
 }
 
+.video-progress-wrapper.dragging .current-progress {
+  background-color: transparent;
+}
+
 .video-progress-wrapper .load-progress {
   background-color: rgba(255, 255, 255, 0.5);
 }
@@ -146,6 +153,10 @@
 .video-progress-wrapper .selected-progress {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+.video-progress-wrapper.dragging .selected-progress {
+  background-color: #ff0000;
 }
 
 .video-progress-wrapper .selected-progress .tooltip {
@@ -165,11 +176,11 @@
   display: block;
 }
 
-.video-progress-wrapper .current-progress .bullet {
-  width: 10px;
-  height: 10px;
-  margin-top: -2px;
-  margin-left: -5px;
+.video-progress-wrapper .selected-progress .bullet {
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  margin-left: -6px;
   background-color: #ff0000;
   border-radius: 100%;
 }
