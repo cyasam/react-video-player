@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import './VideoPlayer.css';
 
+import { formatVideoTime } from '../utils';
+
 import { ReactComponent as PlayIcon } from '../images/play.svg';
 import { ReactComponent as PauseIcon } from '../images/pause.svg';
 import { ReactComponent as VolumeIcon } from '../images/volume.svg';
@@ -19,6 +21,9 @@ function VideoPlayer({ data }) {
   const [video] = useState(data);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [currentTimeLabel, setCurrentTimeLabel] = useState(
+    formatVideoTime(currentTime)
+  );
   const [loadedPercentage, setLoadedPercentage] = useState(0);
   const [status, setStatus] = useState(null);
   const [soundStatus, setSoundStatus] = useState(null);
@@ -127,16 +132,11 @@ function VideoPlayer({ data }) {
     }
   };
 
-  const handleProgressOnOut = () => {
-    if (!bulletDraggableRef.current.state.dragging) {
-      setSelectedTime(0);
-    }
-  };
-
   const handleProgressClick = () => {
     const video = videoRef.current;
     video.currentTime = selectedTime;
-    setCurrentTime(currentTime);
+    setCurrentTime(selectedTime);
+    setCurrentTimeLabel(formatVideoTime(selectedTime));
   };
 
   const handleBulletDrag = (event) => {
@@ -145,39 +145,19 @@ function VideoPlayer({ data }) {
     video.pause();
 
     handleProgressOnOver(event);
+    setCurrentTime(selectedTime);
   };
 
   const handleBulletStop = (_, dragElement) => {
     handleProgressClick();
     setBulletPosX(dragElement.x);
+    setDraggedBullet(false);
+    setCurrentTimeLabel(formatVideoTime(selectedTime));
 
     if (status === 'playing') {
       const video = videoRef.current;
       video.play();
     }
-  };
-
-  const formatVideoTime = (time) => {
-    const allTimeStr = new Date(time * 1000).toISOString().substr(11, 8);
-    const allTime = allTimeStr.split(':');
-
-    const hours = allTime[0];
-    const minutes = allTime[1];
-    const seconds = allTime[2];
-
-    const resultTime = [];
-
-    if (parseInt(hours) > 0) {
-      resultTime.push(parseInt(hours).toString());
-    }
-    if (parseInt(minutes) < 10 && parseInt(hours) > 0) {
-      resultTime.push('0' + parseInt(minutes).toString());
-    } else {
-      resultTime.push(parseInt(minutes).toString());
-    }
-    resultTime.push(seconds);
-
-    return resultTime.join(':');
   };
 
   useEffect(() => {
@@ -211,10 +191,6 @@ function VideoPlayer({ data }) {
     const videoProgress = videoProgressRef.current;
     setBulletPosX((currentTime / duration) * videoProgress.clientWidth);
   }, [currentTime, duration]);
-
-  useEffect(() => {
-    setDraggedBullet(false);
-  }, [currentTime]);
 
   let videoWrapperClass = 'video-wrapper';
 
@@ -259,7 +235,6 @@ function VideoPlayer({ data }) {
             }`}
             onClick={handleProgressClick}
             onMouseMove={handleProgressOnOver}
-            onMouseLeave={handleProgressOnOut}
           >
             <div
               className="load-progress"
@@ -269,25 +244,29 @@ function VideoPlayer({ data }) {
               className="selected-progress"
               style={{ width: getSelectedPercentage() }}
             >
-              <Draggable
-                ref={bulletDraggableRef}
-                nodeRef={bulletRef}
-                axis="x"
-                bounds=".video-progress-wrapper"
-                handle=".bullet"
-                position={{ x: bulletPosX, y: 0 }}
-                offsetParent={videoProgressRef.current}
-                onDrag={handleBulletDrag}
-                onStop={handleBulletStop}
-              >
-                <div ref={bulletRef} className="bullet" />
-              </Draggable>
+              <div className="selected-progress-inner" />
               <div className="tooltip">{formatVideoTime(selectedTime)}</div>
             </div>
             <div
               className="current-progress"
               style={{ width: getCurrentPercentage() }}
             />
+
+            <Draggable
+              ref={bulletDraggableRef}
+              nodeRef={bulletRef}
+              axis="x"
+              bounds=".video-progress-wrapper"
+              handle=".bullet"
+              position={{ x: bulletPosX, y: 0 }}
+              offsetParent={videoProgressRef.current}
+              onDrag={handleBulletDrag}
+              onStop={handleBulletStop}
+            >
+              <div ref={bulletRef} className="bullet">
+                <div className="bullet-inner" />
+              </div>
+            </Draggable>
           </div>
 
           {duration > 0 && (
@@ -299,7 +278,7 @@ function VideoPlayer({ data }) {
                 {soundStatus === 'muted' ? <MuteIcon /> : <VolumeIcon />}
               </button>
               <div className="time-display">
-                {formatVideoTime(currentTime)} / {formatVideoTime(duration)}
+                {currentTimeLabel} / {formatVideoTime(duration)}
               </div>
               <button className="button fullscreen-button" onClick={fullscreen}>
                 {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}

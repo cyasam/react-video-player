@@ -125,11 +125,17 @@
   left: 20px;
   right: 20px;
   top: 0;
-  height: 6px;
+  height: 3px;
   z-index: 10;
   cursor: pointer;
 
   background-color: rgba(255, 255, 255, 0.2);
+  transition: height 0.1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.video-progress-wrapper:hover,
+.video-progress-wrapper.dragging {
+  height: 6px;
 }
 
 .video-progress-wrapper > div {
@@ -142,25 +148,28 @@
   background-color: #ff0000;
 }
 
-.video-progress-wrapper.dragging .current-progress {
-  background-color: transparent;
-}
-
 .video-progress-wrapper .load-progress {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-.video-progress-wrapper .selected-progress {
+.video-progress-wrapper .selected-progress-inner {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-progress-wrapper:hover .selected-progress-inner {
+  opacity: 1;
 }
 
 .video-progress-wrapper.dragging .selected-progress {
   background-color: #ff0000;
 }
 
-.video-progress-wrapper .selected-progress .tooltip {
-  display: none;
+.video-progress-wrapper .tooltip {
+  visibility: hidden;
   position: absolute;
   right: 0;
   transform: translateX(50%);
@@ -172,15 +181,28 @@
   font-size: 14px;
 }
 
-.video-progress-wrapper:hover .selected-progress .tooltip {
-  display: block;
+.video-progress-wrapper:hover .tooltip,
+.video-progress-wrapper.dragging .tooltip {
+  visibility: visible;
 }
 
-.video-progress-wrapper .selected-progress .bullet {
-  width: 16px;
-  height: 16px;
-  margin-top: -5px;
-  margin-left: -6px;
+.video-progress-wrapper .bullet {
+  width: 14px;
+  height: 14px;
+  margin-top: -4px;
+  margin-left: -8px;
+  border-radius: 100%;
+}
+
+.video-progress-wrapper .bullet .bullet-inner {
+  width: 100%;
+  height: 100%;
   background-color: #ff0000;
   border-radius: 100%;
+  transform: scale(0);
+  transition: all 0.1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.video-progress-wrapper:hover .bullet .bullet-inner,
+.video-progress-wrapper.dragging .bullet .bullet-inner {
+  transform: scale(1);
 }
