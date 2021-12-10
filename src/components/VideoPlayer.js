@@ -17,6 +17,7 @@ function VideoPlayer({ data }) {
   const videoProgressRef = useRef(null);
   const bulletRef = useRef(null);
   const bulletDraggableRef = useRef(null);
+  const timeout = useRef(null);
 
   const [video] = useState(data);
   const [duration, setDuration] = useState(0);
@@ -31,6 +32,7 @@ function VideoPlayer({ data }) {
   const [selectedTime, setSelectedTime] = useState(0);
   const [bulletPosX, setBulletPosX] = useState(0);
   const [draggedBullet, setDraggedBullet] = useState(0);
+  const [showControls, setShowControls] = useState(true);
 
   const play = () => {
     const video = videoRef.current;
@@ -160,6 +162,17 @@ function VideoPlayer({ data }) {
     }
   };
 
+  const handleShowControls = () => {
+    clearTimeout(timeout.current);
+    setShowControls(true);
+
+    if (status === 'playing') {
+      timeout.current = setTimeout(() => {
+        setShowControls(false);
+      }, 2000);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener(
       'fullscreenchange',
@@ -198,15 +211,29 @@ function VideoPlayer({ data }) {
     videoWrapperClass += ' fullscreen';
   }
 
+  if (status) {
+    videoWrapperClass += ' ' + status;
+  }
+
+  if (!showControls) {
+    videoWrapperClass += ' hide-controls';
+  }
+
   return (
     <div className="video-player">
-      <div className={videoWrapperClass} ref={videoWrapperRef}>
+      <div
+        className={videoWrapperClass}
+        ref={videoWrapperRef}
+        onMouseMove={handleShowControls}
+      >
         <div className="video-screen">
           <video
             className="video"
             ref={videoRef}
             poster={video.thumb}
             width={video.width}
+            onPlay={handleShowControls}
+            onPause={handleShowControls}
             onLoadedData={onLoadedData}
             onTimeUpdate={onTimeUpdate}
             onEnded={onEnded}
