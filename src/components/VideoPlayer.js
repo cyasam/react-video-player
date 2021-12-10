@@ -9,6 +9,7 @@ function VideoPlayer({ sources, poster, title, volume }) {
   const videoRef = useRef(null);
   const videoPlayerRef = useRef(null);
   const videoProgressRef = useRef(null);
+  const volumeRef = useRef(null);
   const timeout = useRef(null);
 
   const [videoSize, setVideoSize] = useState(null);
@@ -37,14 +38,18 @@ function VideoPlayer({ sources, poster, title, volume }) {
 
   const mute = useCallback(() => {
     const video = videoRef.current;
+
     if (video.muted) {
       video.muted = false;
       setSoundStatus(null);
+      setVolumeMount(volumeRef.current);
     } else {
       video.muted = true;
       setSoundStatus('muted');
+      volumeRef.current = volumeMount;
+      setVolumeMount(0);
     }
-  }, []);
+  }, [volumeMount]);
 
   const fullscreen = useCallback(() => {
     const videoPlayer = videoPlayerRef.current;
