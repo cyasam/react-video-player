@@ -5,13 +5,12 @@ import './VideoPlayer.css';
 import VideoScreen from './VideoScreen';
 import VideoControls from './VideoControls';
 
-function VideoPlayer({ data }) {
+function VideoPlayer({ sources, poster, title }) {
   const videoRef = useRef(null);
   const videoPlayerRef = useRef(null);
   const videoProgressRef = useRef(null);
   const timeout = useRef(null);
 
-  const [video] = useState(data);
   const [videoSize, setVideoSize] = useState(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -223,9 +222,10 @@ function VideoPlayer({ data }) {
         videoRef={(el) => {
           videoRef.current = el;
         }}
+        title={title}
         status={status}
-        sources={video.sources}
-        poster={video.thumb}
+        sources={sources}
+        poster={poster}
         onPlay={handleShowControls}
         onPause={handleShowControls}
         onLoadedData={onLoadedData}

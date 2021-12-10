@@ -2,8 +2,9 @@ import { ReactComponent as PlayIcon } from '../images/play.svg';
 
 function VideoScreen({
   videoRef,
-  poster,
   sources,
+  poster,
+  title,
   style,
   status,
   onPlay,
@@ -31,6 +32,8 @@ function VideoScreen({
         ))}
         Sorry, your browser doesn't support embedded videos.
       </video>
+
+      {title && <div className="title">{title}</div>}
 
       <div
         className="play-overlay"

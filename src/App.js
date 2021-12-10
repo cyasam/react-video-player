@@ -6,9 +6,16 @@ import videosData from './video-data';
 function App() {
   return (
     <div className="app">
-      {videosData.map((video, index) => (
-        <VideoPlayer key={index} data={video} />
-      ))}
+      <div className="container">
+        {videosData.map(({ sources, poster, title }, index) => (
+          <VideoPlayer
+            key={index}
+            sources={sources}
+            poster={poster}
+            title={title}
+          />
+        ))}
+      </div>
     </div>
   );
 }

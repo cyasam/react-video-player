@@ -9,8 +9,8 @@ const video = [
         type: 'video/mp4',
       },
     ],
-    thumb: 'https://video-react.js.org/assets/poster.png',
-    title: 'Surfing',
+    poster: 'https://video-react.js.org/assets/poster.png',
+    title: 'The Durian Open Movie project',
   },
 ];
 
