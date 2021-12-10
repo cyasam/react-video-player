@@ -89,6 +89,17 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
     setLoadedPercentage(loadEndPercentage - loadStartPercentage);
   }, [currentTime, duration]);
 
+  const handleShowControls = useCallback(() => {
+    clearTimeout(timeout.current);
+    setShowControls(true);
+
+    if (status === 'playing') {
+      timeout.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    }
+  }, [status]);
+
   const setCurrentTimeAndDuration = useCallback(() => {
     const video = videoRef.current;
     setDuration(video.duration);
@@ -109,7 +120,9 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
   }, [onProgress, setCurrentTimeAndDuration]);
 
   const onEnded = useCallback(() => {
+    clearTimeout(timeout.current);
     setStatus('paused');
+    setShowControls(true);
   }, []);
 
   const handleProgressOnOver = useCallback(
@@ -163,17 +176,6 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
       video.play();
     }
   }, [status, handleProgressClick]);
-
-  const handleShowControls = useCallback(() => {
-    clearTimeout(timeout.current);
-    setShowControls(true);
-
-    if (status === 'playing') {
-      timeout.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    }
-  }, [status]);
 
   const handleVolumeChange = (volume) => {
     setVolumeMount(volume);
