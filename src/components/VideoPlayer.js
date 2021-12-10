@@ -71,6 +71,7 @@ function VideoPlayer({ data }) {
     const video = videoRef.current;
     setDuration(video.duration);
     setCurrentTime(video.currentTime);
+    setCurrentTimeLabel(formatVideoTime(video.currentTime));
   };
 
   const onLoadedData = () => {
