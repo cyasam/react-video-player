@@ -5,7 +5,7 @@ import './VideoPlayer.css';
 import VideoScreen from './VideoScreen';
 import VideoControls from './VideoControls';
 
-function VideoPlayer({ sources, poster, title }) {
+function VideoPlayer({ sources, poster, title, volume }) {
   const videoRef = useRef(null);
   const videoPlayerRef = useRef(null);
   const videoProgressRef = useRef(null);
@@ -17,6 +17,7 @@ function VideoPlayer({ sources, poster, title }) {
   const [loadedPercentage, setLoadedPercentage] = useState(0);
   const [status, setStatus] = useState(null);
   const [soundStatus, setSoundStatus] = useState(null);
+  const [volumeMount, setVolumeMount] = useState(volume || 100);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
   const [bulletPosX, setBulletPosX] = useState(0);
@@ -165,6 +166,17 @@ function VideoPlayer({ sources, poster, title }) {
     }
   }, [status]);
 
+  const handleVolumeChange = (volume) => {
+    setVolumeMount(volume);
+
+    const video = videoRef.current;
+    video.volume = volume / 100;
+  };
+
+  useEffect(() => {
+    handleVolumeChange(volumeMount);
+  }, [volumeMount]);
+
   useEffect(() => {
     document.addEventListener(
       'fullscreenchange',
@@ -240,6 +252,7 @@ function VideoPlayer({ sources, poster, title }) {
         status={status}
         fullscreenStatus={fullscreenStatus}
         soundStatus={soundStatus}
+        volume={volumeMount}
         currentTime={currentTime}
         duration={duration}
         selectedTime={selectedTime}
@@ -249,6 +262,7 @@ function VideoPlayer({ sources, poster, title }) {
         onClick={handleProgressClick}
         onPlayClick={play}
         onVolumeClick={mute}
+        onVolumeChange={handleVolumeChange}
         onFullscreenClick={fullscreen}
         onMouseMove={handleProgressOnOver}
         onBulletDrag={handleBulletDrag}

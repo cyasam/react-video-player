@@ -9,12 +9,14 @@ import { ReactComponent as FullscreenIcon } from '../images/fullscreen.svg';
 import { ReactComponent as FullscreenExitIcon } from '../images/fullscreen-exit.svg';
 
 import { formatVideoTime } from '../utils';
+import VolumeControl from './VolumeControl';
 
 function VideoControls({
   videoProgressRef,
   status,
   fullscreenStatus,
   soundStatus,
+  volume,
   currentTime,
   duration,
   selectedTime,
@@ -28,6 +30,7 @@ function VideoControls({
   onFullscreenClick,
   onBulletDrag,
   onBulletStop,
+  onVolumeChange,
 }) {
   const bulletRef = useRef(null);
   const [currentTimeLabel, setCurrentTimeLabel] = useState(
@@ -108,6 +111,7 @@ function VideoControls({
           <button className="button" onClick={onVolumeClick}>
             {soundStatus === 'muted' ? <MuteIcon /> : <VolumeIcon />}
           </button>
+          <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
           <div className="time-display">
             {currentTimeLabel} / {formatVideoTime(duration)}
           </div>

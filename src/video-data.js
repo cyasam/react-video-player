@@ -10,7 +10,7 @@ const video = [
       },
     ],
     poster: 'https://video-react.js.org/assets/poster.png',
-    title: 'The Durian Open Movie project',
+    title: 'The Durian Open Movie Project',
   },
 ];
 

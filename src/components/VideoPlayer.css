@@ -3,6 +3,7 @@
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
+  user-select: none;
 }
 
 .video-player .button {
@@ -97,10 +98,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 3;
   font-size: 15px;
   color: #fff;
   padding: 15px 20px;
+  cursor: default;
   transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
