@@ -10,6 +10,7 @@ import { ReactComponent as FullscreenExitIcon } from '../images/fullscreen-exit.
 
 import { formatVideoTime } from '../utils';
 import VolumeControl from './VolumeControl';
+import SpeedSelection from './SpeedSelection';
 
 function VideoControls({
   videoProgressRef,
@@ -17,6 +18,7 @@ function VideoControls({
   fullscreenStatus,
   soundStatus,
   volume,
+  speed,
   currentTime,
   duration,
   selectedTime,
@@ -31,6 +33,7 @@ function VideoControls({
   onBulletDrag,
   onBulletStop,
   onVolumeChange,
+  onSpeedChange,
 }) {
   const bulletRef = useRef(null);
   const [currentTimeLabel, setCurrentTimeLabel] = useState(
@@ -58,6 +61,29 @@ function VideoControls({
   return (
     <div className="video-controls">
       <div className="controls-background" />
+
+      {duration > 0 && (
+        <div className="controls-inner">
+          <button className="button" onClick={onPlayClick}>
+            {status === 'playing' ? <PauseIcon /> : <PlayIcon />}
+          </button>
+          <button className="button" onClick={onVolumeClick}>
+            {soundStatus === 'muted' ? <MuteIcon /> : <VolumeIcon />}
+          </button>
+          <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
+          <div className="time-display">
+            {currentTimeLabel} / {formatVideoTime(duration)}
+          </div>
+
+          <SpeedSelection speed={speed} onSpeedChange={onSpeedChange} />
+          <button
+            className="button fullscreen-button"
+            onClick={onFullscreenClick}
+          >
+            {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}
+          </button>
+        </div>
+      )}
 
       <div
         ref={videoProgressRef}
@@ -102,27 +128,6 @@ function VideoControls({
           </div>
         </Draggable>
       </div>
-
-      {duration > 0 && (
-        <div className="controls-inner">
-          <button className="button" onClick={onPlayClick}>
-            {status === 'playing' ? <PauseIcon /> : <PlayIcon />}
-          </button>
-          <button className="button" onClick={onVolumeClick}>
-            {soundStatus === 'muted' ? <MuteIcon /> : <VolumeIcon />}
-          </button>
-          <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
-          <div className="time-display">
-            {currentTimeLabel} / {formatVideoTime(duration)}
-          </div>
-          <button
-            className="button fullscreen-button"
-            onClick={onFullscreenClick}
-          >
-            {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}
-          </button>
-        </div>
-      )}
     </div>
   );
 }

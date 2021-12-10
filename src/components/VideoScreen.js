@@ -1,4 +1,4 @@
-import { ReactComponent as PlayIcon } from '../images/play.svg';
+import { ReactComponent as PauseIcon } from '../images/pause.svg';
 
 function VideoScreen({
   videoRef,
@@ -35,12 +35,14 @@ function VideoScreen({
 
       {title && <div className="title">{title}</div>}
 
-      <div
-        className="play-overlay"
-        style={{ opacity: status === 'playing' ? 0 : 1 }}
-      >
-        <PlayIcon />
-      </div>
+      {status && (
+        <div
+          className="play-overlay"
+          style={{ opacity: status === 'playing' ? 0 : 1 }}
+        >
+          <PauseIcon />
+        </div>
+      )}
     </div>
   );
 }

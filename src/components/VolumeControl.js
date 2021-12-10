@@ -41,7 +41,6 @@ function VolumeControl({ volume, onVolumeChange }) {
 
   const onMouseMove = useCallback(
     (e) => {
-      console.log('move');
       handleBulletPosition(e);
     },
     [handleBulletPosition]

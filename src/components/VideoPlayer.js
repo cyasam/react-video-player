@@ -5,7 +5,7 @@ import './VideoPlayer.css';
 import VideoScreen from './VideoScreen';
 import VideoControls from './VideoControls';
 
-function VideoPlayer({ sources, poster, title, volume }) {
+function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
   const videoRef = useRef(null);
   const videoPlayerRef = useRef(null);
   const videoProgressRef = useRef(null);
@@ -19,6 +19,7 @@ function VideoPlayer({ sources, poster, title, volume }) {
   const [status, setStatus] = useState(null);
   const [soundStatus, setSoundStatus] = useState(null);
   const [volumeMount, setVolumeMount] = useState(volume || 100);
+  const [speed, setSpeed] = useState(Number(playbackSpeed) || 1);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
   const [bulletPosX, setBulletPosX] = useState(0);
@@ -97,7 +98,10 @@ function VideoPlayer({ sources, poster, title, volume }) {
   const onLoadedData = useCallback(() => {
     setVideoSize(calculateVideoSize());
     setCurrentTimeAndDuration();
-  }, [calculateVideoSize, setCurrentTimeAndDuration]);
+
+    const video = videoRef.current;
+    video.playbackRate = speed;
+  }, [speed, calculateVideoSize, setCurrentTimeAndDuration]);
 
   const onTimeUpdate = useCallback(() => {
     setCurrentTimeAndDuration();
@@ -167,7 +171,7 @@ function VideoPlayer({ sources, poster, title, volume }) {
     if (status === 'playing') {
       timeout.current = setTimeout(() => {
         setShowControls(false);
-      }, 2000);
+      }, 3000);
     }
   }, [status]);
 
@@ -178,9 +182,20 @@ function VideoPlayer({ sources, poster, title, volume }) {
     video.volume = volume / 100;
   };
 
+  const handleSpeedChange = (speed) => {
+    setSpeed(speed);
+
+    const video = videoRef.current;
+    video.playbackRate = speed;
+  };
+
   useEffect(() => {
     handleVolumeChange(volumeMount);
   }, [volumeMount]);
+
+  useEffect(() => {
+    handleSpeedChange(speed);
+  }, [speed]);
 
   useEffect(() => {
     document.addEventListener(
@@ -258,6 +273,7 @@ function VideoPlayer({ sources, poster, title, volume }) {
         fullscreenStatus={fullscreenStatus}
         soundStatus={soundStatus}
         volume={volumeMount}
+        speed={speed}
         currentTime={currentTime}
         duration={duration}
         selectedTime={selectedTime}
@@ -272,6 +288,7 @@ function VideoPlayer({ sources, poster, title, volume }) {
         onMouseMove={handleProgressOnOver}
         onBulletDrag={handleBulletDrag}
         onBulletStop={handleBulletStop}
+        onSpeedChange={handleSpeedChange}
       />
     </div>
   );
