@@ -16,7 +16,9 @@ function VideoScreen({
 }) {
   return (
     <div className="video-screen" onClick={onClick}>
-      <img className="video-poster" src={poster} alt="Poster" />
+      <div className="video-poster">
+        <img src={poster} alt="Poster" />
+      </div>
       <video
         ref={videoRef}
         onPlay={onPlay}
