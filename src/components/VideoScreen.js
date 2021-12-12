@@ -2,7 +2,7 @@ import { ReactComponent as PauseIcon } from '../images/pause.svg';
 
 function VideoScreen({
   videoRef,
-  sources,
+  children,
   poster,
   title,
   style,
@@ -16,10 +16,9 @@ function VideoScreen({
 }) {
   return (
     <div className="video-screen" onClick={onClick}>
+      <img className="video-poster" src={poster} alt="Poster" />
       <video
-        className="video"
         ref={videoRef}
-        poster={poster}
         onPlay={onPlay}
         onPause={onPause}
         onLoadedData={onLoadedData}
@@ -27,9 +26,7 @@ function VideoScreen({
         onEnded={onEnded}
         style={{ ...style }}
       >
-        {sources.map(({ id, url, type }) => (
-          <source key={id} src={url} type={type} />
-        ))}
+        {children}
         Sorry, your browser doesn't support embedded videos.
       </video>
 

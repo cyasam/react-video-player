@@ -1,20 +1,26 @@
 import VideoPlayer from './components/VideoPlayer';
 import './App.css';
 
-import videosData from './video-data';
-
 function App() {
   return (
     <div className="app">
       <div className="container">
-        {videosData.map(({ sources, poster, title }, index) => (
+        <div className="video vertical">
           <VideoPlayer
-            key={index}
-            sources={sources}
-            poster={poster}
-            title={title}
-          />
-        ))}
+            poster="https://www.angrygorilla.us/react-video/test-vertical-poster.jpg"
+            title="Terminator Geniysis Coming"
+          >
+            <source src="https://www.angrygorilla.us/react-video/test-vertical.mp4" />
+          </VideoPlayer>
+        </div>
+        <div className="video">
+          <VideoPlayer
+            poster="https://www.angrygorilla.us/react-video/poster.jpg"
+            title="Sintel - Open Movie by Blender Foundation"
+          >
+            <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
+          </VideoPlayer>
+        </div>
       </div>
     </div>
   );

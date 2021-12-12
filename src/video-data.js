@@ -1,16 +1,25 @@
 const video = [
   {
-    width: 1920,
-    height: 1080,
     sources: [
       {
         id: 1,
-        url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        url: 'video/test-vertical.mp4',
         type: 'video/mp4',
       },
     ],
-    poster: 'https://video-react.js.org/assets/poster.png',
-    title: 'The Durian Open Movie Project',
+    poster: 'video/test-vertical-poster.jpg',
+    title: 'Terminator Geniysis Coming',
+  },
+  {
+    sources: [
+      {
+        id: 1,
+        url: 'video/sprite-fright.mp4',
+        type: 'video/mp4',
+      },
+    ],
+    poster: 'video/sprite-fright-poster.jpg',
+    title: 'Sprite Fright - Blender Open Movie',
   },
 ];
 

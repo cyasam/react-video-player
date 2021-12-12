@@ -5,14 +5,12 @@ import './VideoPlayer.css';
 import VideoScreen from './VideoScreen';
 import VideoControls from './VideoControls';
 
-function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
+function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const videoRef = useRef(null);
   const videoPlayerRef = useRef(null);
-  const videoProgressRef = useRef(null);
   const volumeRef = useRef(null);
   const timeout = useRef(null);
 
-  const [videoSize, setVideoSize] = useState(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [loadedPercentage, setLoadedPercentage] = useState(0);
@@ -22,7 +20,6 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
   const [speed, setSpeed] = useState(Number(playbackSpeed) || 1);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
-  const [bulletPosX, setBulletPosX] = useState(0);
   const [draggedBullet, setDraggedBullet] = useState(0);
   const [showControls, setShowControls] = useState(true);
 
@@ -63,17 +60,6 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
     }
   }, [fullscreenStatus]);
 
-  const calculateVideoSize = useCallback(() => {
-    return {
-      width: videoPlayerRef.current && videoPlayerRef.current.clientWidth,
-      height:
-        videoPlayerRef.current &&
-        videoRef.current &&
-        (videoRef.current.videoHeight / videoRef.current.videoWidth) *
-          videoPlayerRef.current.clientWidth,
-    };
-  }, [videoRef]);
-
   const onProgress = useCallback(() => {
     let range = 0;
     const video = videoRef.current;
@@ -100,24 +86,18 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
     }
   }, [status]);
 
-  const setCurrentTimeAndDuration = useCallback(() => {
-    const video = videoRef.current;
-    setDuration(video.duration);
-    setCurrentTime(video.currentTime);
-  }, []);
-
   const onLoadedData = useCallback(() => {
-    setVideoSize(calculateVideoSize());
-    setCurrentTimeAndDuration();
-
     const video = videoRef.current;
     video.playbackRate = speed;
-  }, [speed, calculateVideoSize, setCurrentTimeAndDuration]);
+    setCurrentTime(video.currentTime);
+    setDuration(video.duration);
+  }, [speed]);
 
   const onTimeUpdate = useCallback(() => {
-    setCurrentTimeAndDuration();
+    const video = videoRef.current;
+    setCurrentTime(video.currentTime);
     onProgress();
-  }, [onProgress, setCurrentTimeAndDuration]);
+  }, [onProgress]);
 
   const onEnded = useCallback(() => {
     clearTimeout(timeout.current);
@@ -125,57 +105,48 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
     setShowControls(true);
   }, []);
 
-  const handleProgressOnOver = useCallback(
-    (event) => {
-      const videoProgress = videoProgressRef.current;
-      const videoProgressClientRects = videoProgress.getClientRects()[0];
-
-      const videoProgressWidth = videoProgressClientRects.width;
-      const videoProgressStartPosition = videoProgressClientRects.x;
-      const videoProgressMousePosition =
-        event.type === 'touchmove'
-          ? event.targetTouches[0].clientX
-          : event.clientX;
-
-      const selectedTimeResult =
-        ((videoProgressMousePosition - videoProgressStartPosition) /
-          videoProgressWidth) *
-        duration;
-
-      if (selectedTimeResult <= duration) {
-        setSelectedTime(selectedTimeResult);
-      }
+  const handleProgressSelect = useCallback(
+    (value) => {
+      const selectedTimeResult = (value / 100) * duration;
+      setSelectedTime(selectedTimeResult);
     },
     [duration]
   );
 
-  const handleProgressClick = useCallback(() => {
+  const handleProgressSelectEnter = useCallback(() => {
     const video = videoRef.current;
     video.currentTime = selectedTime;
-    setCurrentTime(selectedTime);
   }, [selectedTime]);
 
   const handleBulletDrag = useCallback(
-    (event) => {
+    (value) => {
       setDraggedBullet(true);
       const video = videoRef.current;
       video.pause();
 
-      handleProgressOnOver(event);
-      setCurrentTime(selectedTime);
+      handleProgressSelect(value);
     },
-    [selectedTime, handleProgressOnOver]
+    [handleProgressSelect]
   );
 
-  const handleBulletStop = useCallback(() => {
-    handleProgressClick();
-    setDraggedBullet(false);
+  const handleBulletStop = useCallback(
+    (value) => {
+      setDraggedBullet(false);
 
-    if (status === 'playing') {
+      const selectedTimeResult = (value / 100) * duration;
+
       const video = videoRef.current;
-      video.play();
-    }
-  }, [status, handleProgressClick]);
+      video.currentTime = selectedTimeResult;
+
+      setCurrentTime(selectedTimeResult);
+
+      if (status === 'playing') {
+        const video = videoRef.current;
+        video.play();
+      }
+    },
+    [status, duration]
+  );
 
   const handleVolumeChange = (volume) => {
     setVolumeMount(volume);
@@ -211,25 +182,6 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
       },
       false
     );
-
-    window.addEventListener(
-      'resize',
-      function () {
-        const videoProgress = videoProgressRef.current;
-        const videoProgressClientRects = videoProgress.getClientRects()[0];
-
-        const videoProgressWidth = videoProgressClientRects.width;
-
-        setBulletPosX((currentTime / duration) * videoProgressWidth);
-        setVideoSize(calculateVideoSize());
-      },
-      false
-    );
-  }, [currentTime, duration, calculateVideoSize]);
-
-  useEffect(() => {
-    const videoProgress = videoProgressRef.current;
-    setBulletPosX((currentTime / duration) * videoProgress.clientWidth);
   }, [currentTime, duration]);
 
   let videoPlayerClass = 'video-player';
@@ -258,7 +210,6 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
         }}
         title={title}
         status={status}
-        sources={sources}
         poster={poster}
         onPlay={handleShowControls}
         onPause={handleShowControls}
@@ -266,11 +217,11 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
         onClick={play}
-        style={videoSize}
-      />
+      >
+        {children}
+      </VideoScreen>
 
       <VideoControls
-        videoProgressRef={(el) => (videoProgressRef.current = el)}
         status={status}
         fullscreenStatus={fullscreenStatus}
         soundStatus={soundStatus}
@@ -280,16 +231,15 @@ function VideoPlayer({ sources, poster, title, volume, playbackSpeed }) {
         duration={duration}
         selectedTime={selectedTime}
         loadedPercentage={loadedPercentage}
-        bulletPosX={bulletPosX}
         draggedBullet={draggedBullet}
-        onClick={handleProgressClick}
         onPlayClick={play}
         onVolumeClick={mute}
         onVolumeChange={handleVolumeChange}
         onFullscreenClick={fullscreen}
-        onMouseMove={handleProgressOnOver}
         onBulletDrag={handleBulletDrag}
         onBulletStop={handleBulletStop}
+        onProgressOver={handleProgressSelect}
+        onProgressDown={handleProgressSelectEnter}
         onSpeedChange={handleSpeedChange}
       />
     </div>

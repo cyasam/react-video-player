@@ -6,13 +6,14 @@
 }
 
 .speed-selection button {
+  min-width: 50px;
   height: 100%;
   padding: 0 10px;
   border: none;
   background-color: transparent;
   color: #fff;
-  font-size: 14px;
   cursor: pointer;
+  font-size: inherit;
 }
 
 .speed-list {
