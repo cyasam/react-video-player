@@ -2,12 +2,10 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding-right: 6px;
 }
 
 .volume-control .button {
   width: 40px;
-  margin-right: 5px;
   flex-shrink: 0;
 }
 
@@ -16,5 +14,18 @@
 }
 
 .volume-progress {
+  max-width: 0;
   height: 40px;
+  overflow: hidden;
+  transition: max-width 0.8s ease-in 0s;
+}
+
+.volume-progress-inner {
+  height: 100%;
+  padding: 0 6px;
+}
+
+.volume-control:hover .volume-progress,
+.volume-control[data-dragging-bullet='true'] .volume-progress {
+  max-width: 999px;
 }
