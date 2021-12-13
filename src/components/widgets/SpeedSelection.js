@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './SpeedSelection.css';
 
+import { makeClassName } from '../../utils';
+
 const speedList = [
   {
     text: '0.25',
@@ -40,7 +42,12 @@ function SpeedSelection({ speed, onSpeedChange }) {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className="speed-selection">
+    <div
+      className={makeClassName({
+        'speed-selection': true,
+        open: isActive,
+      })}
+    >
       <button onClick={() => setIsActive(!isActive)}>{speed}x</button>
       <ul
         className="speed-list"
@@ -52,7 +59,10 @@ function SpeedSelection({ speed, onSpeedChange }) {
         {speedList.map((item, index) => (
           <li
             key={index}
-            className={`item${item.value === speed ? ' active' : ''}`}
+            className={makeClassName({
+              item: true,
+              active: item.value === speed,
+            })}
             onClick={() => onSpeedChange(item.value)}
           >
             {item.text}

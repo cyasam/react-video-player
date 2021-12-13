@@ -153,7 +153,8 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
   return (
     <div
       ref={ref}
-      className={`progress-container${dragging ? ' dragging' : ''}`}
+      className="progress-container"
+      data-dragging={dragging}
       onClick={onClick}
       onMouseMove={onWrapperMouseMove}
       onMouseDown={onWrapperMouseDown}

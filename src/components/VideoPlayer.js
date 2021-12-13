@@ -20,7 +20,6 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const [speed, setSpeed] = useState(Number(playbackSpeed) || 1);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
-  const [draggedBullet, setDraggedBullet] = useState(0);
   const [showControls, setShowControls] = useState(true);
 
   const play = useCallback(() => {
@@ -120,7 +119,6 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
 
   const handleBulletDrag = useCallback(
     (value) => {
-      setDraggedBullet(true);
       const video = videoRef.current;
       video.pause();
 
@@ -131,8 +129,6 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
 
   const handleBulletStop = useCallback(
     (value) => {
-      setDraggedBullet(false);
-
       const selectedTimeResult = (value / 100) * duration;
 
       const video = videoRef.current;
@@ -232,7 +228,6 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
           duration={duration}
           selectedTime={selectedTime}
           loadedPercentage={loadedPercentage}
-          draggedBullet={draggedBullet}
           onPlayClick={play}
           onVolumeClick={mute}
           onVolumeChange={handleVolumeChange}

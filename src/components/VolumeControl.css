@@ -4,16 +4,12 @@
   height: 100%;
 }
 
-.volume-control .progress-container {
-  width: 52px;
-}
-
 .volume-control .button {
   width: 40px;
   margin-right: 5px;
   flex-shrink: 0;
 }
 
-.fullscreen .volume-control .progress-container {
+.fullscreen .volume-control .volume-progress {
   width: 78px;
 }
