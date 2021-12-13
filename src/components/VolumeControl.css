@@ -25,7 +25,7 @@
   padding: 0 6px;
 }
 
-.volume-control:hover .volume-progress,
+.volume-control.open .volume-progress,
 .volume-control[data-dragging-bullet='true'] .volume-progress {
   max-width: 999px;
 }
