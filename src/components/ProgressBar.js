@@ -118,15 +118,17 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
   }, [value, setBulletPosition]);
 
   useEffect(() => {
-    window.addEventListener(
-      'resize',
-      function () {
-        handleContainerWidth();
-        setBulletPosition(value);
-      },
-      false
-    );
-  }, [value, setBulletPosition, handleContainerWidth]);
+    const resize_ob = new ResizeObserver(function () {
+      setBulletPosition(value);
+    });
+
+    const containerRef = ref.current;
+    resize_ob.observe(containerRef);
+
+    return () => {
+      resize_ob.unobserve(containerRef);
+    };
+  }, [value, setBulletPosition]);
 
   return (
     <div
