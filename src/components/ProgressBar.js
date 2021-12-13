@@ -14,7 +14,16 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
 
   const handleBulletPosition = useCallback(
     (event) => {
-      const mousePosition = event.clientX;
+      let mousePosition;
+
+      if (event.type === 'touchmove') {
+        mousePosition = event.touches[0].clientX;
+      } else if (event.type === 'touchend') {
+        mousePosition = event.changedTouches[0].clientX;
+      } else {
+        mousePosition = event.clientX;
+      }
+
       const refClientRects = ref.current.getClientRects()[0];
       const refStartPosition = refClientRects.left;
       const containerWidth = handleContainerWidth();
@@ -73,6 +82,17 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
       }
     },
     [onMouseMove, onDragStop, calculatePercentage]
+  );
+
+  const onTouchEnd = useCallback(
+    (event) => {
+      setDragging(false);
+
+      if (onDragStop) {
+        onDragStop(calculatePercentage(event), event);
+      }
+    },
+    [onDragStop, calculatePercentage]
   );
 
   const handleMouseDown = useCallback(() => {
@@ -152,6 +172,8 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
           transform: `translateX(${posx}px)`,
         }}
         onMouseDown={handleMouseDown}
+        onTouchMove={onMouseMove}
+        onTouchEnd={onTouchEnd}
       >
         <div className="inner" />
       </div>
