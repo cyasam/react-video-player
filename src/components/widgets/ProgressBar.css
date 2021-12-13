@@ -28,7 +28,6 @@
   position: absolute;
   width: var(--bullet-size);
   height: var(--bullet-size);
-  margin-top: 1px;
   left: calc(-1 * var(--bullet-size) / 2);
   background-color: #fff;
   border-radius: 100%;

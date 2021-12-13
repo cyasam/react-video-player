@@ -92,7 +92,8 @@
 }
 
 @media screen and (max-width: 767px) {
-  .video-screen .title {
-    font-size: 14px;
+  .video-screen .title,
+  .fullscreen .video-screen .title {
+    font-size: 15px;
   }
 }

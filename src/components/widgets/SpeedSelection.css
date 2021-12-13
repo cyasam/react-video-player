@@ -54,7 +54,8 @@
 }
 
 @media screen and (max-width: 767px) {
-  .speed-selection button {
+  .speed-selection button,
+  .fullscreen .speed-selection button {
     width: 40px;
   }
 }
