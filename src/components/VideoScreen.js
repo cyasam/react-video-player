@@ -1,9 +1,9 @@
 import { ReactComponent as PauseIcon } from '../images/pause.svg';
 
+import './VideoScreen.css';
+
 function VideoScreen({
   videoRef,
-  width,
-  height,
   children,
   poster,
   title,

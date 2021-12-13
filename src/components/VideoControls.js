@@ -10,6 +10,8 @@ import VolumeControl from './VolumeControl';
 import SpeedSelection from './SpeedSelection';
 import ProgressBar from './ProgressBar';
 
+import './VideoControls.css';
+
 function VideoControls({
   videoProgressRef,
   status,

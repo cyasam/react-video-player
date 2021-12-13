@@ -1,0 +1,93 @@
+.video-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.video-screen .title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 15px 20px;
+  padding-bottom: 30px;
+  font-size: 16px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  cursor: default;
+  transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.hide-controls .title {
+  opacity: 0;
+}
+
+.video-screen .play-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  transition: all 0.3s ease;
+}
+
+.video-screen .play-overlay svg {
+  width: 4%;
+  height: auto;
+}
+
+.video-screen .play-overlay svg path {
+  fill: #fff;
+}
+
+.video-screen .video-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+}
+
+.video-screen .video-poster img {
+  max-width: 100%;
+  height: auto;
+}
+
+.video-player video {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  background-color: #000;
+}
+
+.fullscreen video {
+  width: 100%;
+}
+
+.fullscreen .video-screen .title {
+  font-size: 24px;
+}
+
+.playing .video-poster,
+.paused .video-poster {
+  display: none;
+}

@@ -150,7 +150,9 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
           transform: `translateX(${posx}px)`,
         }}
         onMouseDown={handleMouseDown}
-      />
+      >
+        <div className="inner" />
+      </div>
     </div>
   );
 }
