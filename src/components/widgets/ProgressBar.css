@@ -42,9 +42,3 @@
   border-radius: 100%;
   cursor: pointer;
 }
-
-@media screen and (max-width: 767px) {
-  .progress-container {
-    min-width: 50px;
-  }
-}

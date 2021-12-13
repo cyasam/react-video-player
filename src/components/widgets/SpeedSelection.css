@@ -10,9 +10,9 @@
 }
 
 .speed-selection button {
-  width: 55px;
+  width: 50px;
   height: 45px;
-  padding: 0 10px;
+  padding: 0;
   border: none;
   background-color: transparent;
   color: #fff;
@@ -51,4 +51,10 @@
 
 .speed-list .item.active {
   background-color: rgba(80, 80, 80, 0.6);
+}
+
+@media screen and (max-width: 767px) {
+  .speed-selection button {
+    width: 40px;
+  }
 }
