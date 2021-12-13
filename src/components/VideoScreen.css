@@ -90,3 +90,9 @@
 .paused .video-poster {
   display: none;
 }
+
+@media screen and (max-width: 767px) {
+  .video-screen .title {
+    font-size: 14px;
+  }
+}
