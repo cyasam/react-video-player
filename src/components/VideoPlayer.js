@@ -11,7 +11,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const volumeRef = useRef(null);
   const timeout = useRef(null);
 
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [loadedPercentage, setLoadedPercentage] = useState(0);
   const [status, setStatus] = useState(null);
@@ -221,27 +221,29 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
         {children}
       </VideoScreen>
 
-      <VideoControls
-        status={status}
-        fullscreenStatus={fullscreenStatus}
-        soundStatus={soundStatus}
-        volume={volumeMount}
-        speed={speed}
-        currentTime={currentTime}
-        duration={duration}
-        selectedTime={selectedTime}
-        loadedPercentage={loadedPercentage}
-        draggedBullet={draggedBullet}
-        onPlayClick={play}
-        onVolumeClick={mute}
-        onVolumeChange={handleVolumeChange}
-        onFullscreenClick={fullscreen}
-        onBulletDrag={handleBulletDrag}
-        onBulletStop={handleBulletStop}
-        onProgressOver={handleProgressSelect}
-        onProgressDown={handleProgressSelectEnter}
-        onSpeedChange={handleSpeedChange}
-      />
+      {duration && (
+        <VideoControls
+          status={status}
+          fullscreenStatus={fullscreenStatus}
+          soundStatus={soundStatus}
+          volume={volumeMount}
+          speed={speed}
+          currentTime={currentTime}
+          duration={duration}
+          selectedTime={selectedTime}
+          loadedPercentage={loadedPercentage}
+          draggedBullet={draggedBullet}
+          onPlayClick={play}
+          onVolumeClick={mute}
+          onVolumeChange={handleVolumeChange}
+          onFullscreenClick={fullscreen}
+          onBulletDrag={handleBulletDrag}
+          onBulletStop={handleBulletStop}
+          onProgressOver={handleProgressSelect}
+          onProgressDown={handleProgressSelectEnter}
+          onSpeedChange={handleSpeedChange}
+        />
+      )}
     </div>
   );
 }

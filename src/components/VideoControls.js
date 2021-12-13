@@ -58,63 +58,61 @@ function VideoControls({
     <div className="video-controls">
       <div className="controls-background" />
 
-      {duration > 0 && (
-        <>
-          <div className="controls-inner">
-            <button className="button" onClick={onPlayClick}>
-              {status === 'playing' ? <PauseIcon /> : <PlayIcon />}
-            </button>
-            <VolumeControl
-              volume={volume}
-              soundStatus={soundStatus}
-              onVolumeClick={onVolumeClick}
-              onVolumeChange={onVolumeChange}
-            />
+      <>
+        <div className="controls-inner">
+          <button className="button" onClick={onPlayClick}>
+            {status === 'playing' ? <PauseIcon /> : <PlayIcon />}
+          </button>
+          <VolumeControl
+            volume={volume}
+            soundStatus={soundStatus}
+            onVolumeClick={onVolumeClick}
+            onVolumeChange={onVolumeChange}
+          />
 
-            <div className="time-display">
-              {currentTimeLabel} / {formatVideoTime(duration)}
-            </div>
-
-            <SpeedSelection speed={speed} onSpeedChange={onSpeedChange} />
-            <button
-              className="button fullscreen-button"
-              onClick={onFullscreenClick}
-            >
-              {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            </button>
+          <div className="time-display">
+            {currentTimeLabel} / {formatVideoTime(duration)}
           </div>
 
-          <div
-            ref={videoProgressRef}
-            className={`video-progress-wrapper${
-              draggedBullet ? ' dragging' : ''
-            }`}
+          <SpeedSelection speed={speed} onSpeedChange={onSpeedChange} />
+          <button
+            className="button fullscreen-button"
+            onClick={onFullscreenClick}
           >
-            <div
-              className="load-progress"
-              style={{ width: getLoadedPercentage() }}
-            />
-            <div
-              className="selected-progress"
-              style={{ width: getSelectedPercentage() }}
-            >
-              <div className="selected-progress-inner" />
-              <div className="tooltip">{formatVideoTime(selectedTime)}</div>
-            </div>
+            {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}
+          </button>
+        </div>
 
-            <ProgressBar
-              value={getCurrentPercentage()}
-              onProgressDown={onProgressDown}
-              onDrag={onBulletDrag}
-              onDragStop={(value) => {
-                onBulletStop(value);
-                setCurrentTimeLabel(formatVideoTime(selectedTime));
-              }}
-              onHover={onProgressOver}
-            />
+        <div
+          ref={videoProgressRef}
+          className={`video-progress-wrapper${
+            draggedBullet ? ' dragging' : ''
+          }`}
+        >
+          <div
+            className="load-progress"
+            style={{ width: getLoadedPercentage() }}
+          />
+          <div
+            className="selected-progress"
+            style={{ width: getSelectedPercentage() }}
+          >
+            <div className="selected-progress-inner" />
+            <div className="tooltip">{formatVideoTime(selectedTime)}</div>
           </div>
-        </>
-      )}
+
+          <ProgressBar
+            value={getCurrentPercentage()}
+            onProgressDown={onProgressDown}
+            onDrag={onBulletDrag}
+            onDragStop={(value) => {
+              onBulletStop(value);
+              setCurrentTimeLabel(formatVideoTime(selectedTime));
+            }}
+            onHover={onProgressOver}
+          />
+        </div>
+      </>
     </div>
   );
 }

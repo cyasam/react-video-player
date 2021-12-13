@@ -4,6 +4,7 @@
   max-width: 100%;
   box-sizing: border-box;
   user-select: none;
+  background-color: #000;
 }
 
 .video-player .button {

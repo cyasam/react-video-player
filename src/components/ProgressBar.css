@@ -1,4 +1,6 @@
 .progress-container {
+  --bullet-size: 12px;
+
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -25,9 +27,9 @@
 
 .progress-bullet {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  left: -7px;
+  width: var(--bullet-size);
+  height: var(--bullet-size);
+  left: calc(-1 * var(--bullet-size) / 2);
   background-color: #fff;
   border-radius: 100%;
   cursor: pointer;

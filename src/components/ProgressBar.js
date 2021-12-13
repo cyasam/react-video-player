@@ -7,39 +7,59 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
   const [dragging, setDragging] = useState(null);
   const [posx, setPosx] = useState(null);
 
-  const handleBulletPosition = useCallback((event) => {
-    const mousePosition = event.clientX;
+  const handleContainerWidth = useCallback(() => {
     const refClientRects = ref.current.getClientRects()[0];
-    const refStartPosition = refClientRects.left;
-    const refWidth = refClientRects.width;
-    const refEndPosition = refStartPosition + refWidth;
-
-    if (mousePosition < refStartPosition) {
-      return {
-        val: 0,
-        containerWidth: refWidth,
-      };
-    } else if (mousePosition > refEndPosition) {
-      return {
-        val: refWidth,
-        containerWidth: refWidth,
-      };
-    }
-
-    return {
-      val: mousePosition - refStartPosition,
-      containerWidth: refWidth,
-    };
+    return refClientRects.width;
   }, []);
+
+  const handleBulletPosition = useCallback(
+    (event) => {
+      const mousePosition = event.clientX;
+      const refClientRects = ref.current.getClientRects()[0];
+      const refStartPosition = refClientRects.left;
+      const containerWidth = handleContainerWidth();
+      const refEndPosition = refStartPosition + containerWidth;
+
+      let val;
+
+      if (mousePosition < refStartPosition) {
+        val = 0;
+      } else if (mousePosition > refEndPosition) {
+        val = containerWidth;
+      } else {
+        val = mousePosition - refStartPosition;
+      }
+
+      return val;
+    },
+    [handleContainerWidth]
+  );
+
+  const setBulletPosition = useCallback(
+    (value) => {
+      const containerWidth = handleContainerWidth();
+      const bulletPosX = (value * containerWidth) / 100;
+      setPosx(bulletPosX);
+    },
+    [handleContainerWidth]
+  );
+
+  const calculatePercentage = useCallback(
+    (event, value) => {
+      const val = value >= 0 ? value : handleBulletPosition(event);
+      const containerWidth = handleContainerWidth();
+      return (val / containerWidth) * 100;
+    },
+    [handleContainerWidth, handleBulletPosition]
+  );
 
   const onMouseMove = useCallback(
     (event) => {
-      const { val, containerWidth } = handleBulletPosition(event);
+      setBulletPosition(calculatePercentage(event));
 
-      setPosx(val);
-      onDrag && onDrag((val / containerWidth) * 100, event);
+      onDrag && onDrag(calculatePercentage(event), event);
     },
-    [onDrag, handleBulletPosition]
+    [setBulletPosition, onDrag, calculatePercentage]
   );
 
   const onMouseUp = useCallback(
@@ -49,11 +69,10 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
       setDragging(false);
 
       if (onDragStop) {
-        const { val, containerWidth } = handleBulletPosition(event);
-        onDragStop((val / containerWidth) * 100, event);
+        onDragStop(calculatePercentage(event), event);
       }
     },
-    [onMouseMove, onDragStop, handleBulletPosition]
+    [onMouseMove, onDragStop, calculatePercentage]
   );
 
   const handleMouseDown = useCallback(() => {
@@ -67,22 +86,19 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
       onMouseMove(event);
 
       if (onDragStop) {
-        const { containerWidth } = handleBulletPosition(event);
-        onDragStop((posx / containerWidth) * 100, event);
+        onDragStop(calculatePercentage(event), event);
       }
     },
-    [handleBulletPosition, onMouseMove, onDragStop, posx]
+    [onMouseMove, onDragStop, calculatePercentage]
   );
 
   const onWrapperMouseMove = useCallback(
     (event) => {
       if (onHover) {
-        const { val, containerWidth } = handleBulletPosition(event);
-
-        onHover((val / containerWidth) * 100);
+        onHover(calculatePercentage(event));
       }
     },
-    [onHover, handleBulletPosition]
+    [onHover, calculatePercentage]
   );
 
   const onWrapperMouseDown = useCallback(
@@ -91,17 +107,26 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
       onMouseMove(event);
 
       if (onProgressDown) {
-        const { val, containerWidth } = handleBulletPosition(event);
-        onProgressDown((val / containerWidth) * 100, event);
+        onProgressDown(calculatePercentage(event), event);
       }
     },
-    [handleMouseDown, onMouseMove, handleBulletPosition, onProgressDown]
+    [handleMouseDown, onMouseMove, calculatePercentage, onProgressDown]
   );
 
   useEffect(() => {
-    const refClientRects = ref.current.getClientRects()[0];
-    setPosx((value / 100) * refClientRects.width);
-  }, [value]);
+    setBulletPosition(value);
+  }, [value, setBulletPosition]);
+
+  useEffect(() => {
+    window.addEventListener(
+      'resize',
+      function () {
+        handleContainerWidth();
+        setBulletPosition(value);
+      },
+      false
+    );
+  }, [value, setBulletPosition, handleContainerWidth]);
 
   return (
     <div
