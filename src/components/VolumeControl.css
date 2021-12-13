@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   height: 100%;
+  padding-right: 6px;
 }
 
 .volume-control .button {
@@ -12,4 +13,8 @@
 
 .fullscreen .volume-control .volume-progress {
   width: 78px;
+}
+
+.volume-progress {
+  height: 40px;
 }
