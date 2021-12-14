@@ -18,6 +18,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const [soundStatus, setSoundStatus] = useState(null);
   const [volumeMount, setVolumeMount] = useState(volume || 100);
   const [speed, setSpeed] = useState(Number(playbackSpeed) || 1);
+  const [selectedSubtitle, setSelectedSubtitle] = useState(null);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
   const [selectedTime, setSelectedTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
@@ -144,27 +145,41 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
     [status, duration]
   );
 
-  const handleVolumeChange = (volume) => {
+  const handleVolumeChange = useCallback((volume) => {
     setVolumeMount(volume);
 
     const video = videoRef.current;
     video.volume = volume / 100;
-  };
+  }, []);
 
-  const handleSpeedChange = (speed) => {
+  const handleSpeedChange = useCallback((speed) => {
     setSpeed(speed);
 
     const video = videoRef.current;
     video.playbackRate = speed;
-  };
+  }, []);
+
+  const handleSubtitleChange = useCallback((track) => {
+    const textTracks = videoRef.current.textTracks;
+
+    for (let i = 0; i < textTracks.length; i++) {
+      textTracks[i].mode = 'disabled';
+
+      if (track && textTracks[i].language === track.language) {
+        textTracks[i].mode = 'showing';
+      }
+    }
+
+    setSelectedSubtitle(track);
+  }, []);
 
   useEffect(() => {
     handleVolumeChange(volumeMount);
-  }, [volumeMount]);
+  }, [volumeMount, handleVolumeChange]);
 
   useEffect(() => {
     handleSpeedChange(speed);
-  }, [speed]);
+  }, [speed, handleSpeedChange]);
 
   useEffect(() => {
     document.addEventListener(
@@ -179,6 +194,16 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
       false
     );
   }, [currentTime, duration]);
+
+  useEffect(() => {
+    const textTracks = videoRef.current.textTracks;
+
+    for (let i = 0; i < textTracks.length; i++) {
+      if (textTracks[i].mode === 'showing') {
+        setSelectedSubtitle(textTracks[i]);
+      }
+    }
+  }, [videoRef]);
 
   let videoPlayerClass = 'video-player';
 
@@ -219,6 +244,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
 
       {duration && (
         <VideoControls
+          videoRef={videoRef}
           status={status}
           fullscreenStatus={fullscreenStatus}
           soundStatus={soundStatus}
@@ -228,6 +254,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
           duration={duration}
           selectedTime={selectedTime}
           loadedPercentage={loadedPercentage}
+          selectedSubtitle={selectedSubtitle}
           onPlayClick={play}
           onVolumeClick={mute}
           onVolumeChange={handleVolumeChange}
@@ -237,6 +264,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
           onProgressOver={handleProgressSelect}
           onProgressDown={handleProgressSelectEnter}
           onSpeedChange={handleSpeedChange}
+          onSubtitleChange={handleSubtitleChange}
         />
       )}
     </div>

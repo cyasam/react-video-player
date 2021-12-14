@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './SelectionList.css';
 import './SpeedSelection.css';
 
 import { makeClassName } from '../../utils';
@@ -38,19 +39,20 @@ const speedList = [
   },
 ];
 
-function SpeedSelection({ speed, onSpeedChange }) {
+function SpeedSelection({ speed, onChange }) {
   const [isActive, setIsActive] = useState(false);
 
   return (
     <div
       className={makeClassName({
         'speed-selection': true,
+        'selection-area': true,
         open: isActive,
       })}
     >
       <button onClick={() => setIsActive(!isActive)}>{speed}x</button>
       <ul
-        className="speed-list"
+        className="selection-list"
         style={{
           visibility: !isActive ? 'hidden' : 'visible',
           opacity: !isActive ? 0 : 1,
@@ -63,7 +65,7 @@ function SpeedSelection({ speed, onSpeedChange }) {
               item: true,
               active: item.value === speed,
             })}
-            onClick={() => onSpeedChange(item.value)}
+            onClick={() => onChange(item.value)}
           >
             {item.text}
           </li>

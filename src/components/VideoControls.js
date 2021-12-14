@@ -5,6 +5,7 @@ import { ReactComponent as FullscreenExitIcon } from '../images/fullscreen-exit.
 
 import VolumeControl from './VolumeControl';
 import SpeedSelection from './widgets/SpeedSelection';
+import SubtitleSelection from './widgets/SubtitleSelection';
 import Button from './widgets/Button';
 import DisplayTime from './widgets/DisplayTime';
 import VideoProgress from './VideoProgress';
@@ -12,6 +13,7 @@ import VideoProgress from './VideoProgress';
 import './VideoControls.css';
 
 function VideoControls({
+  videoRef,
   status,
   fullscreenStatus,
   soundStatus,
@@ -21,6 +23,7 @@ function VideoControls({
   duration,
   selectedTime,
   loadedPercentage,
+  selectedSubtitle,
   onPlayClick,
   onVolumeClick,
   onFullscreenClick,
@@ -30,10 +33,22 @@ function VideoControls({
   onProgressDown,
   onVolumeChange,
   onSpeedChange,
+  onSubtitleChange,
 }) {
   return (
     <div className="video-controls">
       <div className="controls-background" />
+
+      <VideoProgress
+        currentTime={currentTime}
+        selectedTime={selectedTime}
+        loadedPercentage={loadedPercentage}
+        duration={duration}
+        onBulletDrag={onBulletDrag}
+        onBulletStop={onBulletStop}
+        onProgressOver={onProgressOver}
+        onProgressDown={onProgressDown}
+      />
 
       <div className="controls-inner">
         <Button className="button" onClick={onPlayClick}>
@@ -49,7 +64,12 @@ function VideoControls({
 
         <DisplayTime currentTime={currentTime} duration={duration} />
 
-        <SpeedSelection speed={speed} onSpeedChange={onSpeedChange} />
+        <SpeedSelection speed={speed} onChange={onSpeedChange} />
+        <SubtitleSelection
+          videoRef={videoRef}
+          onChange={onSubtitleChange}
+          selectedSubtitle={selectedSubtitle}
+        />
 
         <Button
           className="button fullscreen-button"
@@ -58,17 +78,6 @@ function VideoControls({
           {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}
         </Button>
       </div>
-
-      <VideoProgress
-        currentTime={currentTime}
-        selectedTime={selectedTime}
-        loadedPercentage={loadedPercentage}
-        duration={duration}
-        onBulletDrag={onBulletDrag}
-        onBulletStop={onBulletStop}
-        onProgressOver={onProgressOver}
-        onProgressDown={onProgressDown}
-      />
     </div>
   );
 }

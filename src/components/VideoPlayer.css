@@ -5,6 +5,7 @@
   box-sizing: border-box;
   user-select: none;
   background-color: #000;
+  overflow: hidden;
 }
 
 .video-player.hide-controls {
