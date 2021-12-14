@@ -4,6 +4,7 @@ import './VideoPlayer.css';
 
 import VideoScreen from './VideoScreen';
 import VideoControls from './VideoControls';
+import SubtitleScreen from './SubtitleScreen';
 
 function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const videoRef = useRef(null);
@@ -243,29 +244,35 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
       </VideoScreen>
 
       {duration && (
-        <VideoControls
-          videoRef={videoRef}
-          status={status}
-          fullscreenStatus={fullscreenStatus}
-          soundStatus={soundStatus}
-          volume={volumeMount}
-          speed={speed}
-          currentTime={currentTime}
-          duration={duration}
-          selectedTime={selectedTime}
-          loadedPercentage={loadedPercentage}
-          selectedSubtitle={selectedSubtitle}
-          onPlayClick={play}
-          onVolumeClick={mute}
-          onVolumeChange={handleVolumeChange}
-          onFullscreenClick={fullscreen}
-          onBulletDrag={handleBulletDrag}
-          onBulletStop={handleBulletStop}
-          onProgressOver={handleProgressSelect}
-          onProgressDown={handleProgressSelectEnter}
-          onSpeedChange={handleSpeedChange}
-          onSubtitleChange={handleSubtitleChange}
-        />
+        <>
+          {selectedSubtitle && selectedSubtitle.activeCues && (
+            <SubtitleScreen cue={selectedSubtitle.activeCues} />
+          )}
+
+          <VideoControls
+            videoRef={videoRef}
+            status={status}
+            fullscreenStatus={fullscreenStatus}
+            soundStatus={soundStatus}
+            volume={volumeMount}
+            speed={speed}
+            currentTime={currentTime}
+            duration={duration}
+            selectedTime={selectedTime}
+            loadedPercentage={loadedPercentage}
+            selectedSubtitle={selectedSubtitle}
+            onPlayClick={play}
+            onVolumeClick={mute}
+            onVolumeChange={handleVolumeChange}
+            onFullscreenClick={fullscreen}
+            onBulletDrag={handleBulletDrag}
+            onBulletStop={handleBulletStop}
+            onProgressOver={handleProgressSelect}
+            onProgressDown={handleProgressSelectEnter}
+            onSpeedChange={handleSpeedChange}
+            onSubtitleChange={handleSubtitleChange}
+          />
+        </>
       )}
     </div>
   );

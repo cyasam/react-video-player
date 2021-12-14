@@ -1,0 +1,24 @@
+.subtitle-screen {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 80px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+
+  transition: bottom 0.3s ease;
+}
+
+.subtitle-text {
+  display: block;
+}
+
+.subtitle-visual-line {
+  padding: 0 0.4em;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.hide-controls .subtitle-screen {
+  bottom: 40px;
+}
