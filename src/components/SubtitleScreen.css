@@ -3,7 +3,8 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: 80px;
-  font-size: 20px;
+  width: 100%;
+  font-size: 24px;
   color: #fff;
   text-align: center;
 
@@ -21,4 +22,23 @@
 
 .hide-controls .subtitle-screen {
   bottom: 40px;
+}
+
+.fullscreen .subtitle-screen {
+  font-size: 35px;
+}
+
+@media screen and (max-width: 767px) {
+  .subtitle-screen {
+    bottom: 60px;
+    font-size: 14px;
+  }
+
+  .hide-controls .subtitle-screen {
+    bottom: 25px;
+  }
+
+  .fullscreen .subtitle-screen {
+    font-size: 16px;
+  }
 }
