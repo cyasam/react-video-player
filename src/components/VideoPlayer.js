@@ -21,8 +21,8 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const [speed, setSpeed] = useState(Number(playbackSpeed) || 1);
   const [selectedSubtitle, setSelectedSubtitle] = useState(null);
   const [fullscreenStatus, setFullscreenStatus] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [hidePoster, setHidePoster] = useState(false);
 
   const play = useCallback(() => {
     const video = videoRef.current;
@@ -106,27 +106,15 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
     setShowControls(true);
   }, []);
 
-  const handleProgressSelect = useCallback(
-    (value) => {
-      const selectedTimeResult = (value / 100) * duration;
-      setSelectedTime(selectedTimeResult);
-    },
-    [duration]
-  );
-
-  const handleProgressSelectEnter = useCallback(() => {
-    const video = videoRef.current;
-    video.currentTime = selectedTime;
-  }, [selectedTime]);
-
-  const handleBulletDrag = useCallback(
+  const handleProgressSelectEnter = useCallback(
     (value) => {
       const video = videoRef.current;
       video.pause();
 
-      handleProgressSelect(value);
+      video.currentTime = (value / 100) * duration;
+      setHidePoster(true);
     },
-    [handleProgressSelect]
+    [duration]
   );
 
   const handleBulletStop = useCallback(
@@ -194,7 +182,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
       },
       false
     );
-  }, [currentTime, duration]);
+  }, []);
 
   useEffect(() => {
     const textTracks = videoRef.current.textTracks;
@@ -230,6 +218,7 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
         videoRef={(el) => {
           videoRef.current = el;
         }}
+        hidePoster={hidePoster}
         title={title}
         status={status}
         poster={poster}
@@ -258,16 +247,13 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
             speed={speed}
             currentTime={currentTime}
             duration={duration}
-            selectedTime={selectedTime}
             loadedPercentage={loadedPercentage}
             selectedSubtitle={selectedSubtitle}
             onPlayClick={play}
             onVolumeClick={mute}
             onVolumeChange={handleVolumeChange}
             onFullscreenClick={fullscreen}
-            onBulletDrag={handleBulletDrag}
             onBulletStop={handleBulletStop}
-            onProgressOver={handleProgressSelect}
             onProgressDown={handleProgressSelectEnter}
             onSpeedChange={handleSpeedChange}
             onSubtitleChange={handleSubtitleChange}

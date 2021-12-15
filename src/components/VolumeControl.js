@@ -30,7 +30,7 @@ function VolumeControl({ volume, soundStatus, onVolumeClick, onVolumeChange }) {
       <div className="volume-progress">
         <div className="volume-progress-inner">
           <ProgressBar
-            value={volume}
+            defaultValue={volume}
             onDrag={(event) => {
               onVolumeChange(event);
               setDraggingBullet(true);

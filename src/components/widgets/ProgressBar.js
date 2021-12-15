@@ -2,7 +2,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 import './ProgressBar.css';
 
-function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
+function ProgressBar({
+  defaultValue,
+  onDrag,
+  onDragStop,
+  onHover,
+  onProgressDown,
+}) {
   const ref = useRef(null);
   const [dragging, setDragging] = useState(null);
   const [posx, setPosx] = useState(null);
@@ -44,18 +50,17 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
     [handleContainerWidth]
   );
 
-  const setBulletPosition = useCallback(
-    (value) => {
+  const calcBulletPosition = useCallback(
+    (val) => {
       const containerWidth = handleContainerWidth();
-      const bulletPosX = (value * containerWidth) / 100;
-      setPosx(bulletPosX);
+      return (val * containerWidth) / 100;
     },
     [handleContainerWidth]
   );
 
   const calculatePercentage = useCallback(
-    (event, value) => {
-      const val = value >= 0 ? value : handleBulletPosition(event);
+    (event) => {
+      const val = handleBulletPosition(event);
       const containerWidth = handleContainerWidth();
       return (val / containerWidth) * 100;
     },
@@ -64,11 +69,12 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
 
   const onMouseMove = useCallback(
     (event) => {
-      setBulletPosition(calculatePercentage(event));
+      const bulletPosX = calcBulletPosition(calculatePercentage(event));
+      setPosx(bulletPosX);
 
       onDrag && onDrag(calculatePercentage(event), event);
     },
-    [setBulletPosition, onDrag, calculatePercentage]
+    [calcBulletPosition, onDrag, calculatePercentage]
   );
 
   const onMouseUp = useCallback(
@@ -101,17 +107,6 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
     setDragging(true);
   }, [onMouseMove, onMouseUp]);
 
-  const onClick = useCallback(
-    (event) => {
-      onMouseMove(event);
-
-      if (onDragStop) {
-        onDragStop(calculatePercentage(event), event);
-      }
-    },
-    [onMouseMove, onDragStop, calculatePercentage]
-  );
-
   const onWrapperMouseMove = useCallback(
     (event) => {
       if (onHover) {
@@ -134,28 +129,14 @@ function ProgressBar({ value, onDrag, onDragStop, onHover, onProgressDown }) {
   );
 
   useEffect(() => {
-    setBulletPosition(value);
-  }, [value, setBulletPosition]);
-
-  useEffect(() => {
-    const resize_ob = new ResizeObserver(function () {
-      setBulletPosition(value);
-    });
-
-    const containerRef = ref.current;
-    resize_ob.observe(containerRef);
-
-    return () => {
-      resize_ob.unobserve(containerRef);
-    };
-  }, [value, setBulletPosition]);
+    setPosx(calcBulletPosition(defaultValue));
+  }, [defaultValue, calcBulletPosition]);
 
   return (
     <div
       ref={ref}
       className="progress-container"
       data-dragging={dragging}
-      onClick={onClick}
       onMouseMove={onWrapperMouseMove}
       onMouseDown={onWrapperMouseDown}
     >

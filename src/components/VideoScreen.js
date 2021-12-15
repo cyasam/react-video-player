@@ -6,6 +6,7 @@ function VideoScreen({
   videoRef,
   children,
   poster,
+  hidePoster,
   title,
   style,
   status,
@@ -18,9 +19,11 @@ function VideoScreen({
 }) {
   return (
     <div className="video-screen" onClick={onClick}>
-      <div className="video-poster">
-        <img src={poster} alt="Poster" />
-      </div>
+      {!hidePoster && (
+        <div className="video-poster">
+          <img src={poster} alt="Poster" />
+        </div>
+      )}
       <video
         ref={videoRef}
         onPlay={onPlay}

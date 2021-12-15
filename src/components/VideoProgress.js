@@ -5,14 +5,12 @@ import ProgressBar from './widgets/ProgressBar';
 
 function VideoProgress({
   currentTime,
-  selectedTime,
   loadedPercentage,
   duration,
-  onProgressOver,
   onProgressDown,
-  onBulletDrag,
   onBulletStop,
 }) {
+  const [selectedTime, setSelectedTime] = useState(0);
   const [draggingBullet, setDraggingBullet] = useState(false);
 
   const getCurrentPercentage = useCallback(() => {
@@ -26,6 +24,15 @@ function VideoProgress({
   const getLoadedPercentage = useCallback(() => {
     return loadedPercentage * 100 + '%';
   }, [loadedPercentage]);
+
+  const handleProgressSelect = useCallback(
+    (value) => {
+      const selectedTimeResult = (value / 100) * duration;
+      setSelectedTime(selectedTimeResult);
+    },
+    [duration]
+  );
+
   return (
     <div
       className="video-progress-wrapper"
@@ -41,17 +48,17 @@ function VideoProgress({
       </div>
 
       <ProgressBar
-        value={getCurrentPercentage()}
+        defaultValue={getCurrentPercentage(currentTime)}
         onProgressDown={onProgressDown}
         onDrag={(value) => {
-          onBulletDrag(value);
+          handleProgressSelect(value);
           setDraggingBullet(true);
         }}
         onDragStop={(value) => {
           onBulletStop(value);
           setDraggingBullet(false);
         }}
-        onHover={onProgressOver}
+        onHover={handleProgressSelect}
       />
     </div>
   );

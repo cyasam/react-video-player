@@ -21,7 +21,6 @@ function VideoControls({
   speed,
   currentTime,
   duration,
-  selectedTime,
   loadedPercentage,
   selectedSubtitle,
   onPlayClick,
@@ -29,7 +28,6 @@ function VideoControls({
   onFullscreenClick,
   onBulletDrag,
   onBulletStop,
-  onProgressOver,
   onProgressDown,
   onVolumeChange,
   onSpeedChange,
@@ -41,12 +39,10 @@ function VideoControls({
 
       <VideoProgress
         currentTime={currentTime}
-        selectedTime={selectedTime}
         loadedPercentage={loadedPercentage}
         duration={duration}
         onBulletDrag={onBulletDrag}
         onBulletStop={onBulletStop}
-        onProgressOver={onProgressOver}
         onProgressDown={onProgressDown}
       />
 
