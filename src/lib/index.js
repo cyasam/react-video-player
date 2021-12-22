@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-import './VideoPlayer.css';
+import './index.css';
 
 import VideoScreen from './components/VideoScreen';
 import VideoControls from './components/VideoControls';

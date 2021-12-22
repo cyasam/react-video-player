@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _react = require("react");
 
-require("./VideoPlayer.css");
+require("./index.css");
 
 var _VideoScreen = _interopRequireDefault(require("./components/VideoScreen"));
 
