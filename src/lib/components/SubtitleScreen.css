@@ -1,0 +1,44 @@
+.subtitle-screen {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 80px;
+  width: 100%;
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+
+  transition: bottom 0.3s ease;
+}
+
+.subtitle-text {
+  display: block;
+}
+
+.subtitle-visual-line {
+  padding: 0 0.4em;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.hide-controls .subtitle-screen {
+  bottom: 40px;
+}
+
+.fullscreen .subtitle-screen {
+  font-size: 35px;
+}
+
+@media screen and (max-width: 767px) {
+  .subtitle-screen {
+    bottom: 60px;
+    font-size: 14px;
+  }
+
+  .hide-controls .subtitle-screen {
+    bottom: 25px;
+  }
+
+  .fullscreen .subtitle-screen {
+    font-size: 16px;
+  }
+}

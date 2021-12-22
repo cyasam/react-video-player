@@ -1,4 +1,4 @@
-import VideoPlayer from './components/VideoPlayer';
+import VideoPlayer from './lib/VideoPlayer';
 import './App.css';
 
 function App() {

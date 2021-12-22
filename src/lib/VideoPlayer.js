@@ -2,9 +2,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import './VideoPlayer.css';
 
-import VideoScreen from './VideoScreen';
-import VideoControls from './VideoControls';
-import SubtitleScreen from './SubtitleScreen';
+import VideoScreen from './components/VideoScreen';
+import VideoControls from './components/VideoControls';
+import SubtitleScreen from './components/SubtitleScreen';
 
 function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
   const videoRef = useRef(null);
