@@ -1,11 +1,11 @@
 # rollup-plugin-postcss
 
-[![NPM version](https://img.shields.io/npm/v/kojo-video-player.svg?style=flat)](https://npmjs.com/package/kojo-video-player) [![NPM downloads](https://img.shields.io/npm/dm/kojo-video-player.svg?style=flat)](https://npmjs.com/package/kojo-video-player)
+[![NPM version](https://img.shields.io/npm/v/dojo-video-player.svg?style=flat)](https://npmjs.com/package/dojo-video-player) [![NPM downloads](https://img.shields.io/npm/dm/dojo-video-player.svg?style=flat)](https://npmjs.com/package/dojo-video-player)
 
 ## Install
 
 ```bash
-npm i kojo-video-player
+npm i dojo-video-player
 ```
 
 ## Usage
@@ -13,12 +13,12 @@ npm i kojo-video-player
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import KojoVideoPlayer from 'kojo-video-player';
+import DojoVideoPlayer from 'dojo-video-player';
 
 class App extends React.Component {
   render() {
     return (
-      <VideoPlayer poster="VIDEO_POSTER.jpg" title="VIDEO_TITLE">
+      <DojoVideoPlayer poster="VIDEO_POSTER.jpg" title="VIDEO_TITLE">
         <source src="VIDEO.mp4" />
 
         <track
@@ -40,7 +40,7 @@ class App extends React.Component {
           srcLang="tr"
           src="subtitle-tr.vtt"
         />
-      </VideoPlayer>
+      </DojoVideoPlayer>
     );
   }
 }

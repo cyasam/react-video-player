@@ -1,5 +1,5 @@
 {
-  "name": "kojo-video-player",
+  "name": "dojo-video-player",
   "version": "0.1.0",
   "main": "dist/index.min.js",
   "private": false,
