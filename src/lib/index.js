@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import classNames from 'classnames';
 
-import './index.css';
+import styles from './index.module.css';
 
 import VideoScreen from './components/VideoScreen';
 import VideoControls from './components/VideoControls';
@@ -194,23 +195,13 @@ function VideoPlayer({ children, poster, title, volume, playbackSpeed }) {
     }
   }, [videoRef]);
 
-  let videoPlayerClass = 'video-player';
-
-  if (fullscreenStatus) {
-    videoPlayerClass += ' fullscreen';
-  }
-
-  if (status) {
-    videoPlayerClass += ' ' + status;
-  }
-
-  if (!showControls) {
-    videoPlayerClass += ' hide-controls';
-  }
-
   return (
     <div
-      className={videoPlayerClass}
+      className={classNames(styles['video-player'], {
+        fullscreen: fullscreenStatus,
+        [status]: status,
+        'hide-controls': !showControls,
+      })}
       ref={videoPlayerRef}
       onMouseMove={handleShowControls}
     >

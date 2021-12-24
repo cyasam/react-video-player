@@ -1,11 +1,11 @@
+import classNames from 'classnames';
 import { useState, useEffect } from 'react';
-import './SelectionList.css';
-import './SubtitleSelection.css';
+import styles from './SelectionList.module.css';
 
-import { makeClassName } from '../../utils';
+const buttonActiveBgStyle = 'rgba(255, 0, 0, 0.5)';
 
 function SubtitleSelection({ videoRef, selectedSubtitle, onChange }) {
-  const [tracks, setTracks] = useState(null);
+  const [tracks, setTracks] = useState([]);
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -20,32 +20,36 @@ function SubtitleSelection({ videoRef, selectedSubtitle, onChange }) {
 
   return (
     <>
-      {tracks && (
+      {tracks.length > 0 && (
         <div
-          className={makeClassName({
-            'subtitle-selection': true,
-            'selection-area': true,
-            open: isActive,
-          })}
+          className={classNames(
+            'subtitle-selection',
+            styles['selection-area'],
+            {
+              open: isActive,
+            }
+          )}
         >
           <button
-            className={makeClassName({
-              active: selectedSubtitle && selectedSubtitle.language,
-            })}
             onClick={() => setIsActive(!isActive)}
+            style={{
+              backgroundColor:
+                selectedSubtitle &&
+                selectedSubtitle.language &&
+                buttonActiveBgStyle,
+            }}
           >
             CC
           </button>
           <ul
-            className="selection-list"
+            className={styles['selection-list']}
             style={{
               visibility: !isActive ? 'hidden' : 'visible',
               opacity: !isActive ? 0 : 1,
             }}
           >
             <li
-              className={makeClassName({
-                item: true,
+              className={classNames(styles.item, {
                 active: !selectedSubtitle,
               })}
               onClick={() => onChange(null)}
@@ -56,8 +60,7 @@ function SubtitleSelection({ videoRef, selectedSubtitle, onChange }) {
             {tracks.map((track, index) => (
               <li
                 key={index}
-                className={makeClassName({
-                  item: true,
+                className={classNames(styles.item, {
                   active:
                     selectedSubtitle &&
                     track.language === selectedSubtitle.language,

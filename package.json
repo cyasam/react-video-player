@@ -1,7 +1,7 @@
 {
-  "name": "dojo-video-player",
-  "version": "0.1.0",
-  "main": "dist/index.js",
+  "name": "hojo-video-player",
+  "version": "0.1.8",
+  "main": "dist/index.min.js",
   "private": false,
   "files": [
     "dist",
@@ -11,22 +11,13 @@
     "type": "git",
     "url": "https://github.com/cyasam/react-video-player"
   },
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rimraf dist",
-    "compile": "npm run clean && cross-env NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__"
+    "compile": "npm run clean && rollup -c"
   },
   "eslintConfig": {
     "extends": [
@@ -47,9 +38,23 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
-    "cross-env": "^7.0.3"
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-image": "^2.1.1",
+    "@svgr/rollup": "^6.1.2",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^5.0.0",
+    "rollup": "^2.62.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "web-vitals": "^2.1.2"
+  },
+  "dependencies": {
+    "classnames": "^2.3.1"
   }
 }

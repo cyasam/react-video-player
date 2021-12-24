@@ -20,12 +20,13 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.hide-controls .subtitle-screen {
+:global(.hide-controls) .subtitle-screen {
   bottom: 40px;
 }
 
-.fullscreen .subtitle-screen {
+:global(.fullscreen) .subtitle-screen {
   font-size: 35px;
+  bottom: 100px;
 }
 
 @media screen and (max-width: 767px) {
@@ -34,11 +35,12 @@
     font-size: 14px;
   }
 
-  .hide-controls .subtitle-screen {
+  :global(.hide-controls) .subtitle-screen {
     bottom: 25px;
   }
 
-  .fullscreen .subtitle-screen {
+  :global(.fullscreen) .subtitle-screen {
     font-size: 16px;
+    bottom: 60px;
   }
 }

@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import classNames from 'classnames';
+
 import ProgressBar from './widgets/ProgressBar';
+import Button from './widgets/Button';
+
 import { ReactComponent as VolumeIcon } from '../images/volume.svg';
 import { ReactComponent as MuteIcon } from '../images/mute.svg';
-import './VolumeControl.css';
-
-import { makeClassName } from '../utils';
+import styles from './VolumeControl.module.css';
 
 function VolumeControl({ volume, soundStatus, onVolumeClick, onVolumeChange }) {
   const [draggingBullet, setDraggingBullet] = useState(false);
@@ -12,23 +14,25 @@ function VolumeControl({ volume, soundStatus, onVolumeClick, onVolumeChange }) {
 
   return (
     <div
-      className={makeClassName({ 'volume-control': true, open: clicked })}
+      className={classNames(styles['volume-control'], {
+        [styles.open]: clicked,
+      })}
       data-dragging-bullet={draggingBullet}
       onClick={() => setClicked(true)}
       onMouseEnter={() => setClicked(true)}
       onMouseLeave={() => setClicked(false)}
     >
-      <button
-        className="button"
+      <Button
+        className={styles['volume-control-button']}
         onClick={(event) => {
           onVolumeClick(event);
           setClicked(true);
         }}
       >
         {soundStatus === 'muted' ? <MuteIcon /> : <VolumeIcon />}
-      </button>
-      <div className="volume-progress">
-        <div className="volume-progress-inner">
+      </Button>
+      <div className={styles['volume-progress']}>
+        <div className={styles['volume-progress-inner']}>
           <ProgressBar
             defaultValue={volume}
             onDrag={(event) => {

@@ -51,13 +51,13 @@
   background-color: rgba(80, 80, 80, 0.4);
 }
 
-.selection-list .item.active {
+.selection-list .item:global(.active) {
   background-color: rgba(80, 80, 80, 0.6);
 }
 
 @media screen and (max-width: 767px) {
   .selection-area button,
-  .fullscreen .selection-area button {
+  :global(.fullscreen) .selection-area button {
     width: 40px;
     height: 26px;
   }

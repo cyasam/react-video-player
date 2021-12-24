@@ -10,7 +10,7 @@ import Button from './widgets/Button';
 import DisplayTime from './widgets/DisplayTime';
 import VideoProgress from './VideoProgress';
 
-import './VideoControls.css';
+import styles from './VideoControls.module.css';
 
 function VideoControls({
   videoRef,
@@ -34,8 +34,8 @@ function VideoControls({
   onSubtitleChange,
 }) {
   return (
-    <div className="video-controls">
-      <div className="controls-background" />
+    <div className={styles['video-controls']}>
+      <div className={styles['controls-background']} />
 
       <VideoProgress
         currentTime={currentTime}
@@ -46,8 +46,8 @@ function VideoControls({
         onProgressDown={onProgressDown}
       />
 
-      <div className="controls-inner">
-        <Button className="button" onClick={onPlayClick}>
+      <div className={styles['controls-inner']}>
+        <Button onClick={onPlayClick}>
           {status === 'playing' ? <PauseIcon /> : <PlayIcon />}
         </Button>
 
@@ -68,7 +68,7 @@ function VideoControls({
         />
 
         <Button
-          className="button fullscreen-button"
+          className={styles['fullscreen-button']}
           onClick={onFullscreenClick}
         >
           {fullscreenStatus ? <FullscreenExitIcon /> : <FullscreenIcon />}

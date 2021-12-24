@@ -1,6 +1,6 @@
 import { ReactComponent as PauseIcon } from '../images/pause.svg';
 
-import './VideoScreen.css';
+import styles from './VideoScreen.module.css';
 
 function VideoScreen({
   videoRef,
@@ -18,13 +18,14 @@ function VideoScreen({
   onEnded,
 }) {
   return (
-    <div className="video-screen" onClick={onClick}>
+    <div className={styles['video-screen']} onClick={onClick}>
       {!hidePoster && (
-        <div className="video-poster">
+        <div className={styles['video-poster']}>
           <img src={poster} alt="Poster" />
         </div>
       )}
       <video
+        className={styles.video}
         ref={videoRef}
         onPlay={onPlay}
         onPause={onPause}
@@ -39,11 +40,11 @@ function VideoScreen({
         Sorry, your browser doesn't support embedded videos.
       </video>
 
-      {title && <div className="title">{title}</div>}
+      {title && <div className={styles.title}>{title}</div>}
 
       {status && (
         <div
-          className="play-overlay"
+          className={styles['play-overlay']}
           style={{ opacity: status === 'playing' ? 0 : 1 }}
         >
           <PauseIcon />

@@ -1,8 +1,6 @@
+import classNames from 'classnames';
 import { useState } from 'react';
-import './SelectionList.css';
-import './SpeedSelection.css';
-
-import { makeClassName } from '../../utils';
+import styles from './SelectionList.module.css';
 
 const speedList = [
   {
@@ -44,15 +42,16 @@ function SpeedSelection({ speed, onChange }) {
 
   return (
     <div
-      className={makeClassName({
-        'speed-selection': true,
-        'selection-area': true,
+      className={classNames('speed-selection', styles['selection-area'], {
         open: isActive,
       })}
+      style={{
+        marginLeft: 'auto',
+      }}
     >
       <button onClick={() => setIsActive(!isActive)}>{speed}x</button>
       <ul
-        className="selection-list"
+        className={styles['selection-list']}
         style={{
           visibility: !isActive ? 'hidden' : 'visible',
           opacity: !isActive ? 0 : 1,
@@ -61,8 +60,7 @@ function SpeedSelection({ speed, onChange }) {
         {speedList.map((item, index) => (
           <li
             key={index}
-            className={makeClassName({
-              item: true,
+            className={classNames(styles.item, {
               active: item.value === speed,
             })}
             onClick={() => onChange(item.value)}

@@ -8,6 +8,6 @@
   overflow: hidden;
 }
 
-.video-player.hide-controls {
+.video-player:global(.hide-controls) {
   cursor: none;
 }

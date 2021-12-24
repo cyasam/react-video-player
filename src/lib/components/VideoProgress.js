@@ -3,6 +3,8 @@ import { useState, useCallback } from 'react';
 import { formatVideoTime } from '../utils';
 import ProgressBar from './widgets/ProgressBar';
 
+import styles from './VideoProgress.module.css';
+
 function VideoProgress({
   currentTime,
   loadedPercentage,
@@ -35,16 +37,19 @@ function VideoProgress({
 
   return (
     <div
-      className="video-progress-wrapper"
+      className={styles['video-progress-wrapper']}
       data-dragging-bullet={draggingBullet}
     >
-      <div className="load-progress" style={{ width: getLoadedPercentage() }} />
       <div
-        className="selected-progress"
+        className={styles['load-progress']}
+        style={{ width: getLoadedPercentage() }}
+      />
+      <div
+        className={styles['selected-progress']}
         style={{ width: getSelectedPercentage() }}
       >
-        <div className="selected-progress-inner" />
-        <div className="tooltip">{formatVideoTime(selectedTime)}</div>
+        <div className={styles['selected-progress-inner']} />
+        <div className={styles['tooltip']}>{formatVideoTime(selectedTime)}</div>
       </div>
 
       <ProgressBar

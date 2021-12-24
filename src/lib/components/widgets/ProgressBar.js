@@ -1,8 +1,10 @@
+import classNames from 'classnames';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 import './ProgressBar.css';
 
 function ProgressBar({
+  className,
   defaultValue,
   onDrag,
   onDragStop,
@@ -135,7 +137,7 @@ function ProgressBar({
   return (
     <div
       ref={ref}
-      className="progress-container"
+      className={classNames('progress-container', className)}
       data-dragging={dragging}
       onMouseMove={onWrapperMouseMove}
       onMouseDown={onWrapperMouseDown}

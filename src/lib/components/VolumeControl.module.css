@@ -4,12 +4,12 @@
   height: 100%;
 }
 
-.volume-control .button {
+.volume-control-button {
   width: 40px;
   flex-shrink: 0;
 }
 
-.fullscreen .volume-control .volume-progress {
+:global(.fullscreen) .volume-control .volume-progress {
   width: 78px;
 }
 

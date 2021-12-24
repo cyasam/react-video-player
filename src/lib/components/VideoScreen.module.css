@@ -5,7 +5,7 @@
   height: 100%;
 }
 
-.video-screen .title {
+.title {
   position: absolute;
   top: 0;
   left: 0;
@@ -15,6 +15,7 @@
   padding-bottom: 30px;
   font-size: 16px;
   color: #fff;
+  text-align: left;
   background: rgba(0, 0, 0, 0.3);
   background: linear-gradient(
     180deg,
@@ -26,11 +27,11 @@
   transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.hide-controls .title {
+:global(.hide-controls) .title {
   opacity: 0;
 }
 
-.video-screen .play-overlay {
+.play-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,16 +46,16 @@
   transition: all 0.3s ease;
 }
 
-.video-screen .play-overlay svg {
+.play-overlay svg {
   width: 4%;
   height: auto;
 }
 
-.video-screen .play-overlay svg path {
+.play-overlay svg path {
   fill: #fff;
 }
 
-.video-screen .video-poster {
+.video-poster {
   position: absolute;
   top: 0;
   left: 0;
@@ -66,12 +67,12 @@
   background-color: #000;
 }
 
-.video-screen .video-poster img {
+.video-poster img {
   max-width: 100%;
   height: auto;
 }
 
-.video-player video {
+.video {
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -79,27 +80,27 @@
   background-color: #000;
 }
 
-.video-player video::cue {
+.video::cue {
   visibility: hidden;
   opacity: 0;
 }
 
-.fullscreen video {
+:global(.fullscreen) .video {
   width: 100%;
 }
 
-.fullscreen .video-screen .title {
+:global(.fullscreen) .title {
   font-size: 24px;
 }
 
-.playing .video-poster,
-.paused .video-poster {
+:global(.playing) .video-poster,
+:global(.paused) .video-poster {
   display: none;
 }
 
 @media screen and (max-width: 767px) {
-  .video-screen .title,
-  .fullscreen .video-screen .title {
+  .title,
+  :global(.fullscreen) .title {
     font-size: 15px;
   }
 }

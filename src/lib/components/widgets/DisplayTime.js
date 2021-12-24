@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { formatVideoTime } from '../../utils';
+import styles from './DisplayTime.module.css';
 
 function DisplayTime({ currentTime, duration }) {
   const [currentTimeLabel, setCurrentTimeLabel] = useState(
@@ -12,7 +13,7 @@ function DisplayTime({ currentTime, duration }) {
   }, [currentTime]);
 
   return (
-    <div className="time-display">
+    <div className={styles['time-display']}>
       {currentTimeLabel} / {formatVideoTime(duration)}
     </div>
   );

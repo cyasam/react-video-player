@@ -20,11 +20,3 @@ export const formatVideoTime = (time) => {
 
   return resultTime.join(':');
 };
-
-export const makeClassName = (classnames) => {
-  const array = Object.keys(classnames).filter((classname) => {
-    return classnames[classname];
-  });
-
-  return array.join(' ');
-};

@@ -1,4 +1,4 @@
-import './SubtitleScreen.css';
+import styles from './SubtitleScreen.module.css';
 
 function SubtitleScreen({ cue }) {
   if (cue.length === 0) {
@@ -10,10 +10,10 @@ function SubtitleScreen({ cue }) {
   const textList = text.split('\n');
 
   return (
-    <div className="subtitle-screen">
+    <div className={styles['subtitle-screen']}>
       {textList.map((text, index) => (
-        <span key={index} className="subtitle-text">
-          <span className="subtitle-visual-line">{text}</span>
+        <span key={index} className={styles['subtitle-text']}>
+          <span className={styles['subtitle-visual-line']}>{text}</span>
         </span>
       ))}
     </div>
