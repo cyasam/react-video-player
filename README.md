@@ -1,4 +1,4 @@
-# rollup-plugin-postcss
+# npm i dojo-video-player
 
 [![NPM version](https://img.shields.io/npm/v/dojo-video-player.svg?style=flat)](https://npmjs.com/package/dojo-video-player) [![NPM downloads](https://img.shields.io/npm/dm/dojo-video-player.svg?style=flat)](https://npmjs.com/package/dojo-video-player)
 
