@@ -65,11 +65,9 @@
   justify-content: center;
   align-items: center;
   background-color: #000;
-}
-
-.video-poster img {
-  max-width: 100%;
-  height: auto;
+  background-position: 50% 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .video {

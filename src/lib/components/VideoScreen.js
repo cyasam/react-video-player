@@ -19,12 +19,16 @@ function VideoScreen({
 }) {
   return (
     <div className={styles['video-screen']} onClick={onClick}>
-      {!hidePoster && (
-        <div className={styles['video-poster']}>
-          <img src={poster} alt="Poster" />
-        </div>
+      {poster && !hidePoster && (
+        <div
+          className={styles['video-poster']}
+          style={{
+            backgroundImage: `url(${poster})`,
+          }}
+        />
       )}
       <video
+        poster={poster}
         className={styles.video}
         ref={videoRef}
         onPlay={onPlay}
