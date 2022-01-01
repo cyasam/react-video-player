@@ -18,7 +18,7 @@
     "eject": "react-scripts eject",
     "clean": "rimraf dist",
     "compile": "npm run clean && rollup -c",
-    "fix-it": "npm version patch && npm run compile && npm publish"
+    "fix-it": "npm run compile && npm version patch && npm publish"
   },
   "eslintConfig": {
     "extends": [
